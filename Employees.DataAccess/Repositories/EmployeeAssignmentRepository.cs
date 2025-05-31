@@ -1,3 +1,4 @@
+using CSharpFunctionalExtensions;
 using Employees.Core.Interfaces.Repositories;
 using Employees.Core.Models;
 using Employees.DataAccess.Entities;
@@ -14,7 +15,7 @@ public class EmployeeAssignmentRepository : IEmployeeAssignmentRepository
         _context = context;
     }
 
-    public async Task Add(EmployeeAssignment assignment)
+    public async Task<Result> Add(EmployeeAssignment assignment)
     {
         var assignmentEntity = new EmployeeAssignmentEntity()
         {
@@ -28,13 +29,17 @@ public class EmployeeAssignmentRepository : IEmployeeAssignmentRepository
         
         await _context.EmployeeAssignments.AddAsync(assignmentEntity);
         await _context.SaveChangesAsync();
+        
+        return Result.Success();
     }
 
-    public async Task Update(EmployeeAssignment assignment)
+    public async Task<Result> Update(EmployeeAssignment assignment)
     {
         var assignmentEntity = await _context.EmployeeAssignments
-            .FirstOrDefaultAsync(x => x.Id == assignment.Id)
-            ?? throw new InvalidOperationException("Assignment not found.");
+            .FirstOrDefaultAsync(x => x.Id == assignment.Id);
+        
+        if (assignmentEntity == null)
+            return Result.Failure("Employee assignment not found");
 
         assignmentEntity.EmployeeId = assignment.EmployeeId;
         assignmentEntity.PositionId = assignment.PositionId;
@@ -43,18 +48,22 @@ public class EmployeeAssignmentRepository : IEmployeeAssignmentRepository
         assignmentEntity.RemovedAt = assignment.RemovedAt;
 
         await _context.SaveChangesAsync();
+        
+        return Result.Success();
     }
 
-    public async Task<EmployeeAssignment> GetById(Guid id)
+    public async Task<Result<EmployeeAssignment>> GetById(Guid id)
     {
         var assignmentEntity = await _context.EmployeeAssignments
             .AsNoTracking()
             .Include(x => x.Employee)
             .Include(x => x.Position)
-            .FirstOrDefaultAsync(x => x.Id == id)
-            ?? throw new InvalidOperationException("Assignment not found.");
-
-        var assignment = EmployeeAssignment.Create
+            .FirstOrDefaultAsync(x => x.Id == id);
+        
+        if (assignmentEntity == null)
+            return Result.Failure<EmployeeAssignment>("Employee assignment not found");
+        
+        var assignmentResult = EmployeeAssignment.Create
         (
             assignmentEntity.Id,
             assignmentEntity.EmployeeId,
@@ -64,19 +73,22 @@ public class EmployeeAssignmentRepository : IEmployeeAssignmentRepository
             assignmentEntity.RemovedAt
         );
         
-        if(!assignment.IsSuccess)
-            throw new InvalidOperationException(assignment.Error);
+        if(!assignmentResult.IsSuccess)
+            return Result.Failure<EmployeeAssignment>(assignmentResult.Error);
         
-        return assignment.Value;
+        return assignmentResult;
     }
 
-    public async Task<List<EmployeeAssignment>> GetByEmployeeId(Guid employeeId)
+    public async Task<Result<List<EmployeeAssignment>>> GetByEmployeeId(Guid employeeId)
     {
         var assignmentsEntityes = await _context.EmployeeAssignments
             .AsNoTracking()
             .Where(x => x.EmployeeId == employeeId)
             .Include(x => x.Position)
             .ToListAsync();
+        
+        if(assignmentsEntityes.Count == 0)
+            return Result.Failure<List<EmployeeAssignment>>("Employee assignment not found");
 
         var assignments = new List<EmployeeAssignment>();
 
@@ -90,14 +102,16 @@ public class EmployeeAssignmentRepository : IEmployeeAssignmentRepository
                 assignmentEntity.AssignedAt,
                 assignmentEntity.RemovedAt);
             
-            if(assignment.IsSuccess)
-                assignments.Add(assignment.Value);
+            if(!assignment.IsSuccess)
+                return Result.Failure<List<EmployeeAssignment>>("Employee assignment not found");
+            
+            assignments.Add(assignment.Value);
         }
         
         return assignments;
     }
 
-    public async Task<List<EmployeeAssignment>> GetActiveByDepartment(Guid departmentId, DateOnly onDate)
+    public async Task<Result<List<EmployeeAssignment>>> GetActiveByDepartment(Guid departmentId, DateOnly onDate)
     {
         var assignmentsEntityes = await _context.EmployeeAssignments
             .AsNoTracking()
@@ -108,6 +122,9 @@ public class EmployeeAssignmentRepository : IEmployeeAssignmentRepository
             .Include(x => x.Position)
             .ToListAsync();
         
+        if(assignmentsEntityes.Count == 0)
+            return Result.Failure<List<EmployeeAssignment>>("Employee assignment not found");
+        
         var assignments = new List<EmployeeAssignment>();
 
         foreach (var assignmentEntity in assignmentsEntityes)
@@ -120,14 +137,16 @@ public class EmployeeAssignmentRepository : IEmployeeAssignmentRepository
                 assignmentEntity.AssignedAt,
                 assignmentEntity.RemovedAt);
             
-            if(assignment.IsSuccess)
-                assignments.Add(assignment.Value);
+            if(!assignment.IsSuccess)
+                return Result.Failure<List<EmployeeAssignment>>("Employee assignment not found");
+            
+            assignments.Add(assignment.Value);
         }
         
         return assignments;
     }
 
-    public async Task<List<EmployeeAssignment>> GetAll()
+    public async Task<Result<List<EmployeeAssignment>>> GetAll()
     {
         var assignmentsEntityes = await _context.EmployeeAssignments
             .AsNoTracking()
@@ -135,6 +154,9 @@ public class EmployeeAssignmentRepository : IEmployeeAssignmentRepository
             .Include(x => x.Position)
             .ToListAsync();
         
+        if(assignmentsEntityes.Count == 0)
+            return Result.Failure<List<EmployeeAssignment>>("Employee assignment not found");
+        
         var assignments = new List<EmployeeAssignment>();
 
         foreach (var assignmentEntity in assignmentsEntityes)
@@ -147,8 +169,10 @@ public class EmployeeAssignmentRepository : IEmployeeAssignmentRepository
                 assignmentEntity.AssignedAt,
                 assignmentEntity.RemovedAt);
             
-            if(assignment.IsSuccess)
-                assignments.Add(assignment.Value);
+            if(!assignment.IsSuccess)
+                return Result.Failure<List<EmployeeAssignment>>("Employee assignment not found");
+            
+            assignments.Add(assignment.Value);
         }
         
         return assignments;

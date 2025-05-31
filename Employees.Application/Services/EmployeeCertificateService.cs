@@ -1,10 +1,12 @@
 using CSharpFunctionalExtensions;
 using Employees.Core.Interfaces.Repositories;
+using Employees.Core.Interfaces.Services;
 using Employees.Core.Models;
+using Employees.Core.Models.Filter;
 
 namespace Employees.Application.Services;
 
-public class EmployeeCertificateService
+public class EmployeeCertificateService : IEmployeeCertificateService
 {
     private readonly IEmployeeCertificateRepository _employeeCertificateRepository;
 
@@ -63,5 +65,39 @@ public class EmployeeCertificateService
     public async Task<Result<EmployeeCertificate>> GetCertificate(Guid id)
     {
         return await _employeeCertificateRepository.GetById(id);
+    }
+
+    public async Task<Result<List<EmployeeCertificate>>> GetEmployeeCertificates(Guid employeeId)
+    {
+        return await _employeeCertificateRepository.GetByEmployeeId(employeeId);
+    }
+    
+    public async Task<Result<List<EmployeeCertificate>>> GetEmployeeCertificatesValidOnDate(Guid employeeId, DateOnly asOfDate)
+    {
+        return await _employeeCertificateRepository.GetValidCertificates(employeeId, asOfDate);
+    }
+    
+    public async Task<Result<List<EmployeeCertificate>>> Filter(
+        Guid? employeeId, 
+        string? name,
+        string? issuedBy,
+        DateOnly? issuedFrom,
+        DateOnly? issuedTo,
+        DateOnly? validUntilFrom,
+        DateOnly? validUntilTo)
+    {
+        var employeeCertificateFilter = EmployeeCertificateFilter.Create(
+            employeeId,
+            name,
+            issuedBy,
+            issuedFrom,
+            issuedTo,
+            validUntilFrom,
+            validUntilTo);
+        
+        if(employeeCertificateFilter.IsFailure)
+            return Result.Failure<List<EmployeeCertificate>>(employeeCertificateFilter.Error);
+        
+        return await _employeeCertificateRepository.Filter(employeeCertificateFilter.Value);
     }
 }

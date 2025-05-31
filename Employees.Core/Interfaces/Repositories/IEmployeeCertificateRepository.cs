@@ -10,6 +10,6 @@ public interface IEmployeeCertificateRepository
     Task<Result> Update(EmployeeCertificate certificate);
     Task<Result<EmployeeCertificate>> GetById(Guid id);
     Task<Result<List<EmployeeCertificate>>> GetByEmployeeId(Guid employeeId);
-    Task<List<EmployeeCertificate>> GetValidCertificates(Guid employeeId, DateOnly asOfDate);
-    Task<List<EmployeeCertificate>> Filter(EmployeeCertificateFilter filter);
+    Task<Result<List<EmployeeCertificate>>> GetValidCertificates(Guid employeeId, DateOnly asOfDate);
+    Task<Result<List<EmployeeCertificate>>> Filter(EmployeeCertificateFilter filter);
 }

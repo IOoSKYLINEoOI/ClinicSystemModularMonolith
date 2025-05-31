@@ -1,3 +1,4 @@
+using CSharpFunctionalExtensions;
 using Employees.Core.Interfaces.Repositories;
 using Employees.Core.Models;
 using Employees.DataAccess.Entities;
@@ -14,7 +15,7 @@ public class EmployeeRepository : IEmployeeRepository
         _context = context;
     }
 
-    public async Task Add(Employee employee)
+    public async Task<Result> Add(Employee employee)
     {
         var employeeEntity = new EmployeeEntity()
         {
@@ -27,72 +28,74 @@ public class EmployeeRepository : IEmployeeRepository
         
         await _context.Employees.AddAsync(employeeEntity);
         await _context.SaveChangesAsync();
+        
+        return Result.Success();
     }
 
-    public async Task Update(Employee employeeNew)
-    {
-        var employee = await _context.Employees
-                           .FirstOrDefaultAsync(u => u.Id == employeeNew.Id && u.IsActive)
-                       ?? throw new InvalidOperationException("User not found or deleted.");
-           
-        
-        employee.UserId = employeeNew.UserId;
-        employee.HireDate = employeeNew.HireDate;
-        employee.FireDate = employeeNew.FireDate;
-        employee.IsActive = employeeNew.IsActive;
-        
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task<Employee> GetById(Guid id)
+    public async Task<Result> Update(Employee employeeNew)
     {
         var employeeEntity = await _context.Employees
-                                 .AsNoTracking()
-                                 .FirstOrDefaultAsync(u => u.Id == id && u.IsActive)
-                             ?? throw new InvalidOperationException("Employee not found or isn't active.");
+            .FirstOrDefaultAsync(u => u.Id == employeeNew.Id && u.IsActive);
+        
+        if(employeeEntity is null)
+            return Result.Failure("Employee not found or deleted");
+        
+        employeeEntity.UserId = employeeNew.UserId;
+        employeeEntity.HireDate = employeeNew.HireDate;
+        employeeEntity.FireDate = employeeNew.FireDate;
+        
+        await _context.SaveChangesAsync();
+        
+        return Result.Success();
+    }
 
-        var employee = Employee.Create(
+    public async Task<Result<Employee>> GetById(Guid id)
+    {
+        var employeeEntity = await _context.Employees
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Id == id && u.IsActive);
+        
+        if(employeeEntity is null)
+            return Result.Failure<Employee>("Employee not found or deleted");
+                             
+
+        var employeeResult = Employee.Create(
             employeeEntity.Id,
             employeeEntity.UserId,
             employeeEntity.HireDate,
             employeeEntity.FireDate,
             employeeEntity.IsActive);
         
-        if (!employee.IsSuccess)
-            throw new InvalidOperationException(employee.Error);
+        if (!employeeResult.IsSuccess)
+            return Result.Failure<Employee>(employeeResult.Error);
         
-        return employee.Value;
+        return employeeResult;
     }
 
-    public async Task FireEmployee(Guid employeeId, DateTime fireDate)
+    public async Task<Result> FireEmployee(Guid employeeId, DateOnly fireDate)
     {
         var employeeEntity = await _context.Employees
-                                 .FirstOrDefaultAsync(e => e.Id == employeeId && e.IsActive)
-                             ?? throw new InvalidOperationException("Employee not found or isn't active.");
+                                 .FirstOrDefaultAsync(e => e.Id == employeeId && e.IsActive);
+        if (employeeEntity is null)
+            return Result.Failure<Employee>("Employee not found or deleted");
 
-        var updated = Employee.Create(
-            employeeEntity.Id,
-            employeeEntity.UserId,
-            employeeEntity.HireDate,
-            DateOnly.FromDateTime(fireDate),
-            false
-        );
-
-        if (!updated.IsSuccess)
-            throw new InvalidOperationException(updated.Error);
-
-        employeeEntity.FireDate = DateOnly.FromDateTime(fireDate);
+        employeeEntity.FireDate = fireDate;
         employeeEntity.IsActive = false;
 
         await _context.SaveChangesAsync();
+        
+        return Result.Success();
     }
 
-    public async Task<List<Employee>> GetAll()
+    public async Task<Result<List<Employee>>> GetAll()
     {
         var entities = await _context.Employees
             .AsNoTracking()
             .Where(u => u.IsActive)
             .ToListAsync();
+        
+        if(entities.Count == 0)
+            return Result.Failure<List<Employee>>("Employees not found or deleted");
         
         var result = new List<Employee>();
 
@@ -105,24 +108,29 @@ public class EmployeeRepository : IEmployeeRepository
                 entity.FireDate, 
                 entity.IsActive);
             
-            if (employee.IsSuccess)
-                result.Add(employee.Value);
+            if (!employee.IsSuccess)
+                return Result.Failure<List<Employee>>(employee.Error);
+            
+            result.Add(employee.Value);
         }
         
         return result;
     }
 
-    public async Task<bool> GetIsActive(Guid id)
+    public async Task<Result<bool>> GetIsActive(Guid id)
     {
-        return await _context.Employees.AnyAsync(e => e.Id == id);
+        var exists = await _context.Employees.AnyAsync(e => e.Id == id && e.IsActive);
+        return Result.Success(exists);
     }
 
-    public async Task<Employee> GetByUserId(Guid userId)
+    public async Task<Result<Employee>> GetByUserId(Guid userId)
     {
         var employeeEntity = await _context.Employees
             .AsNoTracking()
-            .FirstOrDefaultAsync(e => e.UserId == userId)
-                             ?? throw new InvalidOperationException("Employee not found or isn't active.");
+            .FirstOrDefaultAsync(e => e.UserId == userId);
+        
+        if (employeeEntity is null)
+            return Result.Failure<Employee>("Employee not found or deleted");
         
         var employee = Employee.Create(
             employeeEntity.Id, 
@@ -132,12 +140,12 @@ public class EmployeeRepository : IEmployeeRepository
             employeeEntity.IsActive);
         
         if(!employee.IsSuccess)
-            throw new InvalidOperationException(employee.Error);
+            return Result.Failure<Employee>(employee.Error);
         
-        return employee.Value;
+        return employee;
     }
     
-    public async Task<List<Employee>> GetRecentlyHired(int days = 30)
+    public async Task<Result<List<Employee>>> GetRecentlyHired(int days)
     {
         var since = DateOnly.FromDateTime(DateTime.Now.AddDays(-days));
 
@@ -145,11 +153,27 @@ public class EmployeeRepository : IEmployeeRepository
             .AsNoTracking()
             .Where(e => e.HireDate >= since && e.IsActive)
             .ToListAsync();
+        
+        if(entities.Count == 0)
+            return Result.Failure<List<Employee>>("Employees not found or deleted");
 
-        return entities
-            .Select(e => Employee.Create(e.Id, e.UserId, e.HireDate, e.FireDate, e.IsActive))
-            .Where(r => r.IsSuccess)
-            .Select(r => r.Value)
-            .ToList();
+        var result = new List<Employee>();
+
+        foreach (var entity in entities)
+        {
+            var employee = Employee.Create(
+                entity.Id, 
+                entity.UserId, 
+                entity.HireDate, 
+                entity.FireDate, 
+                entity.IsActive);
+            
+            if (!employee.IsSuccess)
+                return Result.Failure<List<Employee>>(employee.Error);
+            
+            result.Add(employee.Value);
+        }
+        
+        return result;
     }
 }

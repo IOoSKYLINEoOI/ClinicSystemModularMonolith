@@ -74,13 +74,16 @@ public class EmployeeCertificateRepository : IEmployeeCertificateRepository
         return employeeCertificateResult;
     }
 
-    public async Task<List<EmployeeCertificate>> GetByEmployeeId(Guid employeeId)
+    public async Task<Result<List<EmployeeCertificate>>> GetByEmployeeId(Guid employeeId)
     {
         var employeeCertificatesEntities = await _context.EmployeeCertificates
             .AsNoTracking()
             .Where(e => e.EmployeeId == employeeId)
-            .ToListAsync()
-            ?? throw new InvalidOperationException("Certificates not found or deleted.");
+            .ToListAsync();
+        
+        if (employeeCertificatesEntities.Count == 0)
+            return Result.Failure<List<EmployeeCertificate>>("Certificate not found or deleted");
+            
         
         var employeeCertificates = new List<EmployeeCertificate>();
 
@@ -95,7 +98,7 @@ public class EmployeeCertificateRepository : IEmployeeCertificateRepository
                 employeeCertificateEntity.ValidUntil);
             
             if (!employeeCertificate.IsSuccess)
-                throw new InvalidOperationException(employeeCertificate.Error);
+                return Result.Failure<List<EmployeeCertificate>>(employeeCertificate.Error);
             
             employeeCertificates.Add(employeeCertificate.Value);
         }
@@ -103,13 +106,15 @@ public class EmployeeCertificateRepository : IEmployeeCertificateRepository
         return employeeCertificates;
     }
 
-    public async Task<List<EmployeeCertificate>> GetValidCertificates(Guid employeeId, DateOnly asOfDate)
+    public async Task<Result<List<EmployeeCertificate>>> GetValidCertificates(Guid employeeId, DateOnly asOfDate)
     {
         var employeeCertificatesEntities = await _context.EmployeeCertificates
-                                               .AsNoTracking()
-                                               .Where(e => e.EmployeeId == employeeId && e.ValidUntil >= asOfDate)
-                                               .ToListAsync()
-                                           ?? throw new InvalidOperationException("Certificates not found or deleted.");
+            .AsNoTracking()
+            .Where(e => e.EmployeeId == employeeId && e.ValidUntil >= asOfDate)
+            .ToListAsync();
+        
+        if (employeeCertificatesEntities.Count == 0)
+            return Result.Failure<List<EmployeeCertificate>>("Certificate not found or deleted");
         
         var employeeCertificates = new List<EmployeeCertificate>();
 
@@ -124,7 +129,7 @@ public class EmployeeCertificateRepository : IEmployeeCertificateRepository
                 employeeCertificateEntity.ValidUntil);
             
             if (!employeeCertificate.IsSuccess)
-                throw new InvalidOperationException(employeeCertificate.Error);
+                return Result.Failure<List<EmployeeCertificate>>(employeeCertificate.Error);
             
             employeeCertificates.Add(employeeCertificate.Value);
         }
@@ -132,7 +137,7 @@ public class EmployeeCertificateRepository : IEmployeeCertificateRepository
         return employeeCertificates;
     }
 
-    public async Task<List<EmployeeCertificate>> Filter(EmployeeCertificateFilter filter)
+    public async Task<Result<List<EmployeeCertificate>>> Filter(EmployeeCertificateFilter filter)
     {
         var query = _context.EmployeeCertificates
             .AsNoTracking()
@@ -174,7 +179,7 @@ public class EmployeeCertificateRepository : IEmployeeCertificateRepository
                 entity.ValidUntil);
 
             if (!model.IsSuccess)
-                throw new InvalidOperationException(model.Error);
+                return Result.Failure<List<EmployeeCertificate>>(model.Error);
 
             result.Add(model.Value);
         }

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Users.Api.Contracts.User;
-using Users.Core.Enums;
 using Users.Core.Interfaces.Services;
 using Users.Core.ValueObjects;
 

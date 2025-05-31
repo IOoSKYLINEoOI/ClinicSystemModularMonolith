@@ -1,3 +1,4 @@
+using CSharpFunctionalExtensions;
 using Employees.Core.Interfaces.Repositories;
 using Employees.Core.Models;
 using Employees.Core.Models.Filter;
@@ -31,11 +32,13 @@ public class EmployeeLicenseRepository : IEmployeeLicenseRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task Update(EmployeeLicense license)
+    public async Task<Result> Update(EmployeeLicense license)
     {
         var licenseEntity = await _context.EmployeeLicenses
-            .FirstOrDefaultAsync(u => u.Id == license.Id)
-            ?? throw new InvalidOperationException("License not found or deleted.");
+            .FirstOrDefaultAsync(u => u.Id == license.Id);
+        
+        if (licenseEntity is null)
+            return Result.Failure<EmployeeLicense>("License not found or deleted.");
         
         licenseEntity.LicenseNumber = license.LicenseNumber;
         licenseEntity.IssuedBy = license.IssuedBy;
@@ -43,16 +46,20 @@ public class EmployeeLicenseRepository : IEmployeeLicenseRepository
         licenseEntity.ValidUntil = license.ValidUntil;
         
         await _context.SaveChangesAsync();
+        
+        return Result.Success();
     }
 
-    public async Task<EmployeeLicense> GetById(Guid id)
+    public async Task<Result<EmployeeLicense>> GetById(Guid id)
     {
         var employeeLicenseEntity = await _context.EmployeeLicenses
             .AsNoTracking()
-            .FirstOrDefaultAsync(u => u.Id == id)
-            ?? throw new InvalidOperationException("License not found or deleted.");
-
-        var employeeLicense =
+            .FirstOrDefaultAsync(u => u.Id == id);
+        
+        if (employeeLicenseEntity is null)
+            return Result.Failure<EmployeeLicense>("License not found or deleted.");
+        
+        var employeeLicenseResult =
             EmployeeLicense.Create(
                 employeeLicenseEntity.Id, 
                 employeeLicenseEntity.EmployeeId,
@@ -61,25 +68,27 @@ public class EmployeeLicenseRepository : IEmployeeLicenseRepository
                 employeeLicenseEntity.IssuedAt,
                 employeeLicenseEntity.ValidUntil);
         
-        if(!employeeLicense.IsSuccess)
-            throw new InvalidOperationException(employeeLicense.Error);
+        if (employeeLicenseResult.IsFailure)
+            return Result.Failure<EmployeeLicense>(employeeLicenseResult.Error);
 
-        return employeeLicense.Value;
+        return employeeLicenseResult;
     }
 
-    public async Task<List<EmployeeLicense>> GetByEmployeeId(Guid employeeId)
+    public async Task<Result<List<EmployeeLicense>>> GetByEmployeeId(Guid employeeId)
     {
         var employeeLicensesEntities = await _context.EmployeeLicenses
             .AsNoTracking()
             .Where(e => e.EmployeeId == employeeId)
-            .ToListAsync()
-            ?? throw new InvalidOperationException("License not found or deleted.");
+            .ToListAsync();
+            
+        if (employeeLicensesEntities.Count == 0)
+            return Result.Failure<List<EmployeeLicense>>("License not found or deleted.");
         
         var employeeLicenses = new List<EmployeeLicense>();
 
         foreach (var employeeLicenseEntity in employeeLicensesEntities)
         {
-            var employeeLicense = EmployeeLicense.Create(
+            var employeeLicenseResult = EmployeeLicense.Create(
                 employeeLicenseEntity.Id,
                 employeeLicenseEntity.EmployeeId,
                 employeeLicenseEntity.LicenseNumber,
@@ -87,28 +96,30 @@ public class EmployeeLicenseRepository : IEmployeeLicenseRepository
                 employeeLicenseEntity.IssuedAt,
                 employeeLicenseEntity.ValidUntil);
             
-            if (!employeeLicense.IsSuccess)
-                throw new InvalidOperationException(employeeLicense.Error);
+            if (employeeLicenseResult.IsFailure)
+                return Result.Failure<List<EmployeeLicense>>(employeeLicenseResult.Error);
             
-            employeeLicenses.Add(employeeLicense.Value);
+            employeeLicenses.Add(employeeLicenseResult.Value);
         }
         
         return employeeLicenses;
     }
 
-    public async Task<List<EmployeeLicense>> GetValidLicenses(Guid employeeId, DateOnly asOfDate)
+    public async Task<Result<List<EmployeeLicense>>> GetValidLicenses(Guid employeeId, DateOnly asOfDate)
     {
         var employeeLicensesEntities = await _context.EmployeeLicenses
-                                               .AsNoTracking()
-                                               .Where(e => e.EmployeeId == employeeId && e.ValidUntil >= asOfDate)
-                                               .ToListAsync()
-                                           ?? throw new InvalidOperationException("Licenses not found or deleted.");
+            .AsNoTracking()
+            .Where(e => e.EmployeeId == employeeId && e.ValidUntil >= asOfDate)
+            .ToListAsync();
+        
+        if (employeeLicensesEntities.Count == 0)
+            return Result.Failure<List<EmployeeLicense>>("License not found or deleted.");
         
         var employeeLicenses = new List<EmployeeLicense>();
 
         foreach (var employeeLicenseEntity in employeeLicensesEntities)
         {
-            var employeeLicense = EmployeeLicense.Create(
+            var employeeLicenseResult = EmployeeLicense.Create(
                 employeeLicenseEntity.Id,
                 employeeLicenseEntity.EmployeeId,
                 employeeLicenseEntity.LicenseNumber,
@@ -116,16 +127,16 @@ public class EmployeeLicenseRepository : IEmployeeLicenseRepository
                 employeeLicenseEntity.IssuedAt,
                 employeeLicenseEntity.ValidUntil);
             
-            if (!employeeLicense.IsSuccess)
-                throw new InvalidOperationException(employeeLicense.Error);
+            if (employeeLicenseResult.IsFailure)
+                return Result.Failure<List<EmployeeLicense>>(employeeLicenseResult.Error);
             
-            employeeLicenses.Add(employeeLicense.Value);
+            employeeLicenses.Add(employeeLicenseResult.Value);
         }
         
         return employeeLicenses;
     }
 
-    public async Task<List<EmployeeLicense>> Filter(EmployeeLicenseFilter filter)
+    public async Task<Result<List<EmployeeLicense>>> Filter(EmployeeLicenseFilter filter)
     {
         var query = _context.EmployeeLicenses
             .AsNoTracking()
@@ -167,7 +178,7 @@ public class EmployeeLicenseRepository : IEmployeeLicenseRepository
                 entity.ValidUntil);
 
             if (!model.IsSuccess)
-                throw new InvalidOperationException(model.Error);
+                return Result.Failure<List<EmployeeLicense>>(model.Error);
 
             result.Add(model.Value);
         }
