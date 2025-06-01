@@ -4,11 +4,11 @@ using Users.Core.ValueObjects;
 namespace Users.Api.Contracts.User;
 
 public record UserResponse(
-    Guid id,
-    string firstName,
-    string lastName,
-    string? fatherName,
-    DateOnly dateOfBirth,
-    Gender gender,
-    string email,
-    string phoneNumber);
+    Guid Id,
+    string FirstName,
+    string LastName,
+    string? FatherName,
+    DateOnly DateOfBirth,
+    Gender Gender,
+    string Email,
+    string PhoneNumber);

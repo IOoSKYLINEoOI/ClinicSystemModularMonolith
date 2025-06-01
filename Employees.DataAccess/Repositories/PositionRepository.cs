@@ -1,9 +1,8 @@
 using CSharpFunctionalExtensions;
-using Employees.Core.Enums;
 using Employees.Core.Interfaces.Repositories;
 using Employees.Core.Models;
+using Employees.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
-using Position = Employees.Core.Models.Position;
 
 namespace Employees.DataAccess.Repositories;
 
@@ -16,21 +15,7 @@ public class PositionRepository : IPositionRepository
         _context = context;
     }
 
-    public async Task<Result<HashSet<Position>>> GetEmployeePositions(Guid employeeId)
-    {
-        var positions = await _context.EmployeeAssignments
-            .AsNoTracking()
-            .Where(ur => ur.EmployeeId == employeeId)
-            .Select(p => p.PositionId)
-            .ToListAsync();
-        
-        if (!positions.Any())
-            return Result.Failure<HashSet<Position>>("No employee assignments found");
-
-        return positions.ToHashSet();
-    }
-
-    public async Task<Result<List<Position>>> GetAllPosition()
+    public async Task<Result<List<Position>>> GetAll()
     {
         var positionsEntityes = await _context.Positions
             .AsNoTracking()
@@ -43,7 +28,7 @@ public class PositionRepository : IPositionRepository
 
         foreach (var positionEntity in positionsEntityes)
         {
-            var position = Position.Create(
+            var position = Position.Load(
                 positionEntity.Id,
                 positionEntity.Name);
             
@@ -54,5 +39,38 @@ public class PositionRepository : IPositionRepository
         }
         
         return positions;
+    }
+
+    public async Task<Result> Add(Position position)
+    {
+        var positionEntity = new PositionEntity()
+        {
+            Id = position.Id,
+            Name = position.Name
+        };
+        
+        await _context.Positions.AddAsync(positionEntity);
+        await _context.SaveChangesAsync();
+        
+        return Result.Success();
+    }
+
+    public async Task<Result<Position>> GetById(int id)
+    {
+        var positionEntity = await _context.Positions
+            .AsNoTracking()
+            .FirstOrDefaultAsync(e => e.Id == id);
+        
+        if(positionEntity == null)
+            return Result.Failure<Position>("Position not found");
+        
+        var positionResult = Position.Load(
+            positionEntity.Id,
+            positionEntity.Name);
+        
+        if(!positionResult.IsSuccess)
+            return Result.Failure<Position>("Position not found");
+        
+        return positionResult;
     }
 }

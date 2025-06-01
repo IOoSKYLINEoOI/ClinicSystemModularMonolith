@@ -1,6 +1,6 @@
 namespace Employees.Core.Enums;
 
-public enum Position
+public enum PositionEnum
     {
         Doctor = 1,                     // Врач
         Nurse = 2,                       // Медсестра

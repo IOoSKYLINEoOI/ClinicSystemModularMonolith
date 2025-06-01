@@ -20,7 +20,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> RegisterUser(RegisterUserRequest request)
+    public async Task<IActionResult> RegisterUser([FromBody] RegisterUserRequest request)
     {
         var phoneNumberResult = PhoneNumber.Create(request.PhoneNumber, true, true, false);
         if (phoneNumberResult.IsFailure)
@@ -50,7 +50,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> LoginUser(LoginUserRequest request)
+    public async Task<IActionResult> LoginUser([FromBody] LoginUserRequest request)
     {
         var emailResult = Email.Create(request.Email);
         if (emailResult.IsFailure)
