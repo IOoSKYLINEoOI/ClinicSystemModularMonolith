@@ -4,29 +4,29 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClinicSystemModularMonolith
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{3214A960-F3CB-4352-8BB4-DC5EFE7EFBB8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Users", "Users", "{7C82E91F-0652-4F75-B403-8F1288907750}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Users", "Modules\Users", "{7C82E91F-0652-4F75-B403-8F1288907750}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.DataAccess", "Users.DataAccess\Users.DataAccess.csproj", "{C940538E-82E4-4579-83B6-FE18A3A5E190}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.DataAccess", "Modules\Users\Users.DataAccess\Users.DataAccess.csproj", "{C940538E-82E4-4579-83B6-FE18A3A5E190}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Application", "Users.Application\Users.Application.csproj", "{FDE1DB22-3921-4B10-BBCF-553B2C4253C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Application", "Modules\Users\Users.Application\Users.Application.csproj", "{FDE1DB22-3921-4B10-BBCF-553B2C4253C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Infrastructure", "Users.Infrastructure\Users.Infrastructure.csproj", "{6350B619-F8B5-4185-ADB3-A07072EC783B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Infrastructure", "Modules\Users\Users.Infrastructure\Users.Infrastructure.csproj", "{6350B619-F8B5-4185-ADB3-A07072EC783B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Api", "Users.Api\Users.Api.csproj", "{EE73891F-2235-4D1B-90B2-A7D9D515006E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Api", "Modules\Users\Users.Api\Users.Api.csproj", "{EE73891F-2235-4D1B-90B2-A7D9D515006E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Core", "Users.Core\Users.Core.csproj", "{D7A238E8-3CC6-4BB2-90AC-33B8D74501D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Core", "Modules\Users\Users.Core\Users.Core.csproj", "{D7A238E8-3CC6-4BB2-90AC-33B8D74501D2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Employees", "Employees", "{1A768D4A-1DB6-4BE8-B1DC-7D54F815D901}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Employees", "Modules\Employees", "{1A768D4A-1DB6-4BE8-B1DC-7D54F815D901}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Employees.Api", "Employees.Api\Employees.Api.csproj", "{D5925867-76F5-4D11-A67B-B5F52BFD21D6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Employees.Api", "Modules\Employees\Employees.Api\Employees.Api.csproj", "{D5925867-76F5-4D11-A67B-B5F52BFD21D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Employees.Application", "Employees.Application\Employees.Application.csproj", "{EDCEE015-B171-489B-BF8A-B6F2B485E5F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Employees.Application", "Modules\Employees\Employees.Application\Employees.Application.csproj", "{EDCEE015-B171-489B-BF8A-B6F2B485E5F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Employees.Core", "Employees.Core\Employees.Core.csproj", "{328A6446-7D49-4735-B83B-53BED759AA35}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Employees.Core", "Modules\Employees\Employees.Core\Employees.Core.csproj", "{328A6446-7D49-4735-B83B-53BED759AA35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Employees.DataAccess", "Employees.DataAccess\Employees.DataAccess.csproj", "{40F552BB-529F-4226-9370-C2D0C4841F2F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Employees.DataAccess", "Modules\Employees\Employees.DataAccess\Employees.DataAccess.csproj", "{40F552BB-529F-4226-9370-C2D0C4841F2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Employees.Infastructure", "Employees.Infastructure\Employees.Infastructure.csproj", "{796B1B85-4859-4371-BA8A-266C494900D6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Employees.Infastructure", "Modules\Employees\Employees.Infastructure\Employees.Infastructure.csproj", "{796B1B85-4859-4371-BA8A-266C494900D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -21,7 +21,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Users.Api\Users.Api.csproj" />
+      <ProjectReference Include="..\Modules\Users\Users.Api\Users.Api.csproj" />
+      <ProjectReference Include="..\Modules\Users\Users.Application\Users.Application.csproj" />
+      <ProjectReference Include="..\Modules\Users\Users.DataAccess\Users.DataAccess.csproj" />
+      <ProjectReference Include="..\Modules\Users\Users.Infrastructure\Users.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

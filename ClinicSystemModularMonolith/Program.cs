@@ -7,6 +7,7 @@ using Users.Domain.Seeders;
 using Users.Infrastructure;
 using Users.Infrastructure.Authentication;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((ctx, cfg) =>
