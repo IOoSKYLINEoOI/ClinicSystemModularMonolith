@@ -2,11 +2,13 @@ using AutoMapper;
 using Employees.Api.Contracts.License;
 using Employees.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Employees.Api.Controllers;
 
 [ApiController]
 [Route("employee-licenses")]
+[ApiExplorerSettings(GroupName = "Employees / LicenseController")]
 public class LicenseController: ControllerBase
 {
     private readonly IEmployeeLicenseService _employeeLicenseService;
@@ -19,6 +21,11 @@ public class LicenseController: ControllerBase
     }
     
     [HttpPost]
+    [SwaggerOperation(
+        OperationId = "AddNewLicense",
+        Summary = "Добавить лицензию сотрудника",
+        Description = "Создает новую лицензия для указанного сотрудника с указанием номера, организации, выдавшей сертификат, и срока действия."
+    )]
     public async Task<IActionResult> AddNewLicense([FromBody] AddNewLicenseRequest request)
     {
         var result = await _employeeLicenseService.AddLicense(
@@ -32,6 +39,11 @@ public class LicenseController: ControllerBase
     }
     
     [HttpPut]
+    [SwaggerOperation(
+        OperationId = "UpdateLicense",
+        Summary = "Обновить лицензию сотрудника",
+        Description = "Обновляет данные существующей лицензии сотрудника по ее идентификатору. Можно изменить номер, выдавшую организацию и срок действия."
+    )]
     public async Task<IActionResult> UpdateLicense([FromBody] UpdateLicenseRequest request)
     {
         var result = await _employeeLicenseService.UpdateLicense(
@@ -44,6 +56,11 @@ public class LicenseController: ControllerBase
     }
     
     [HttpGet("{id:guid}")]
+    [SwaggerOperation(
+        OperationId = "GetLicense",
+        Summary = "Получить лицензию сотрудника по Id",
+        Description = "Возвращает подробную информацию о лицензии сотрудника по ее уникальному идентификатору."
+    )]
     public async Task<ActionResult<LicenseResponse>> GetLicense(Guid id)
     {
         var certificateResult = await _employeeLicenseService.GetLicense(id);
@@ -56,6 +73,11 @@ public class LicenseController: ControllerBase
     }
     
     [HttpGet("by-employee/{employeeId}")]
+    [SwaggerOperation(
+        OperationId = "GetLicenseByEmployee",
+        Summary = "Получить все лицензии сотрудника по Id сотрудника",
+        Description = "Возвращает список всех лицензий, выданных конкретному сотруднику по его идентификатору."
+    )]
     public async Task<ActionResult<List<LicenseResponse>>> GetLicenseByEmployee(Guid employeeId)
     {
         var certificatesResult = await _employeeLicenseService.GetEmployeeLicenses(employeeId);
@@ -67,8 +89,13 @@ public class LicenseController: ControllerBase
         return Ok(response);
     }
     
-    [HttpGet("valid-on/{employeeId}/{asOfDate}")]
-    public async Task<ActionResult<List<LicenseResponse>>> GetLicenseValidOnDate(Guid employeeId, DateOnly days)
+    [HttpGet("valid-on/{employeeId}")]
+    [SwaggerOperation(
+        OperationId = "GetLicenseValidOnDate",
+        Summary = "Получить все лицензии сотрудника по Id сотрудника на дату",
+        Description = "Возвращает лицензии сотрудника, действительные на указанную дату. Используется для проверки актуальности сертификатов."
+    )]
+    public async Task<ActionResult<List<LicenseResponse>>> GetLicenseValidOnDate(Guid employeeId,[FromQuery] DateOnly days)
     {
         var certificatesResult = await _employeeLicenseService.GetEmployeeLicensesValidOnDate(employeeId, days);
         if(certificatesResult.IsFailure)
@@ -80,6 +107,11 @@ public class LicenseController: ControllerBase
     }
     
     [HttpPost("filter")]
+    [SwaggerOperation(
+        OperationId = "LicenseFilter",
+        Summary = "Получить отфильтрованные лицензии",
+        Description = "Позволяет получить список лицензий по заданным фильтрам: имя сотрудника, организация, дата выдачи и срок действия."
+    )]
     public async Task<ActionResult<List<LicenseResponse>>> LicenseFilter(
         [FromBody] LicenseFilterRequest request)
     {

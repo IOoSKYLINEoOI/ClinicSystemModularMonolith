@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using Users.Api.Contracts.User;
 using Users.Core.Interfaces.Services;
 using Users.Core.ValueObjects;
@@ -10,16 +11,22 @@ namespace Users.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class UsersController : ControllerBase
+[ApiExplorerSettings(GroupName = "Users / UserController")]
+public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
 
-    public UsersController(IUserService userService)
+    public UserController(IUserService userService)
     {
         _userService = userService;
     }
 
     [HttpPost("register")]
+    [SwaggerOperation(
+        OperationId = "RegisterUser",
+        Summary = "Регистрация нового пользователя",
+        Description = "Создает нового пользователя с указанием личных данных, адреса электронной почты, номера телефона и пароля. Выполняет валидацию введённых данных и сохраняет пользователя в системе."
+    )]
     public async Task<IActionResult> RegisterUser([FromBody] RegisterUserRequest request)
     {
         var phoneNumberResult = PhoneNumber.Create(request.PhoneNumber, true, true, false);
@@ -50,6 +57,11 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost("login")]
+    [SwaggerOperation(
+        OperationId = "LoginUser",
+        Summary = "Авторизация пользователя",
+        Description = "Проверяет логин и пароль пользователя. В случае успеха устанавливает HTTP-only cookie с JWT токеном для последующих запросов."
+    )]
     public async Task<IActionResult> LoginUser([FromBody] LoginUserRequest request)
     {
         var emailResult = Email.Create(request.Email);
@@ -76,6 +88,11 @@ public class UsersController : ControllerBase
 
     [Authorize]
     [HttpPut("updateProfile")]
+    [SwaggerOperation(
+        OperationId = "UpdateUser",
+        Summary = "Обновить данные пользователя",
+        Description = "Позволяет текущему авторизованному пользователю обновить свои личные данные, включая имя, email и номер телефона. Выполняется валидация данных."
+    )]
     public async Task<ActionResult> UpdateUser([FromBody] UpdateUserRequest request)
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -108,6 +125,11 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost("logout")]
+    [SwaggerOperation(
+        OperationId = "LogoutUser",
+        Summary = "Выход из системы",
+        Description = "Удаляет cookie с JWT токеном и завершает сеанс текущего пользователя."
+    )]
     public IActionResult LogoutUser()
     {
         Response.Cookies.Delete("secretCookie");
@@ -116,6 +138,11 @@ public class UsersController : ControllerBase
 
     [Authorize]
     [HttpGet("me")]
+    [SwaggerOperation(
+        OperationId = "GetUserProfile",
+        Summary = "Получить данные текущего пользователя",
+        Description = "Возвращает профиль текущего авторизованного пользователя по ID, извлечённому из JWT токена."
+    )]
     public async Task<ActionResult<UserResponse>> GetUserProfile()
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -146,13 +173,18 @@ public class UsersController : ControllerBase
     
     [Authorize]
     [HttpPut("changePassword")]
+    [SwaggerOperation(
+        OperationId = "ChangePassword",
+        Summary = "Смена пароля",
+        Description = "Позволяет авторизованному пользователю изменить свой пароль. Для изменения требуется указать текущий и новый пароль."
+    )]
     public async Task<ActionResult<UserResponse>> ChangePassword([FromBody] ChangePasswordRequest request)
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (!Guid.TryParse(userIdClaim, out var userId))
             return Unauthorized();
         
-        var result = await _userService.ChangePassword(userId, request.currentPassword, request.newPassword);
+        var result = await _userService.ChangePassword(userId, request.CurrentPassword, request.NewPassword);
         
         if (result.IsFailure)
         {

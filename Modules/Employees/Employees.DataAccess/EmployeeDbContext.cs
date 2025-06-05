@@ -1,4 +1,3 @@
-using Employees.Core.Models;
 using Employees.DataAccess.Configuration;
 using Employees.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;

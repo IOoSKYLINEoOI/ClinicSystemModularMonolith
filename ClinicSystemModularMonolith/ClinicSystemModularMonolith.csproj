@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.5">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -21,6 +22,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Modules\Employees\Employees.Api\Employees.Api.csproj" />
+      <ProjectReference Include="..\Modules\Employees\Employees.Application\Employees.Application.csproj" />
+      <ProjectReference Include="..\Modules\Employees\Employees.DataAccess\Employees.DataAccess.csproj" />
+      <ProjectReference Include="..\Modules\Employees\Employees.Infrastructure\Employees.Infrastructure.csproj" />
       <ProjectReference Include="..\Modules\Users\Users.Api\Users.Api.csproj" />
       <ProjectReference Include="..\Modules\Users\Users.Application\Users.Application.csproj" />
       <ProjectReference Include="..\Modules\Users\Users.DataAccess\Users.DataAccess.csproj" />

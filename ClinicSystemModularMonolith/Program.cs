@@ -1,4 +1,8 @@
 using ClinicSystemModularMonolith.Infrastructure.Middleware;
+using ClinicSystemModularMonolith.Infrastructure.Swagger;
+using Employees.Application;
+using Employees.DataAccess;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using Users.Api.Extension;
 using Users.Application;
@@ -19,12 +23,36 @@ builder.Services.AddOpenApi();
 builder.Configuration.AddUserSecrets<Program>();
 builder.Services.AddApiAuthentication(builder.Configuration);
 builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "ClinicSystemModularMonolith", Version = "v1" });
+    
+    options.EnableAnnotations();
+    
+    options.CustomSchemaIds(CustomSchemaNaming.GetCustomSchemaId);
+    
+    options.TagActionsBy(api =>
+    {
+        var groupName = api.GroupName;
+        return !string.IsNullOrEmpty(groupName) ? new[] { groupName } : [api.ActionDescriptor.RouteValues["controller"] ?? "default"];
+    });
+
+    options.DocInclusionPredicate((name, api) => true);
+});
+    
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
+
 builder.Services
     .AddUserPersistence(builder.Configuration)
     .AddUserApplication()
     .AddUserInfrastructure();
+
+builder.Services
+    .AddEmployeePersistence(builder.Configuration)
+    .AddEmployeeApplication();
+
 builder.Services.AddProblemDetails();
 
 var app = builder.Build();

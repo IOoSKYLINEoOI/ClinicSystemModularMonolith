@@ -1,4 +1,4 @@
-namespace Employees.Api.Contracts.EmployeeCertificate;
+namespace Employees.Api.Contracts.Certificate;
 
 public record CertificateFilterRequest(
     Guid? EmployeeId,

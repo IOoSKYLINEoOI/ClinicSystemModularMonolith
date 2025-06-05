@@ -1,12 +1,13 @@
 using Employees.Api.Contracts.Certificate;
-using Employees.Api.Contracts.EmployeeCertificate;
 using Employees.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Employees.Api.Controllers;
 
 [ApiController]
 [Route("employee-certificates")]
+[ApiExplorerSettings(GroupName = "Employees / CertificateController")]
 public class CertificateController : ControllerBase
 {
     private readonly IEmployeeCertificateService _employeeCertificateService;
@@ -17,6 +18,11 @@ public class CertificateController : ControllerBase
     }
 
     [HttpPost]
+    [SwaggerOperation(
+        OperationId = "AddNewCertificate",
+        Summary = "Добавить сертификат сотрудника",
+        Description = "Создает новый сертификат для указанного сотрудника с указанием названия, организации, выдавшей сертификат, и срока действия."
+    )]
     public async Task<IActionResult> AddNewCertificate([FromBody] AddNewCertificateRequest request)
     {
         var result = await _employeeCertificateService.AddCertificate(
@@ -30,6 +36,11 @@ public class CertificateController : ControllerBase
     }
 
     [HttpPut]
+    [SwaggerOperation(
+        OperationId = "UpdateCertificate",
+        Summary = "Обновить сертификат сотрудника",
+        Description = "Обновляет данные существующего сертификата сотрудника по его идентификатору. Можно изменить название, выдавшую организацию и срок действия."
+    )]
     public async Task<IActionResult> UpdateCertificate([FromBody] UpdateCertificateRequest request)
     {
         var result = await _employeeCertificateService.UpdateCertificate(
@@ -42,6 +53,11 @@ public class CertificateController : ControllerBase
     }
     
     [HttpGet("{id:guid}")]
+    [SwaggerOperation(
+        OperationId = "GetCertificate",
+        Summary = "Получить сертификат сотрудника по Id",
+        Description = "Возвращает подробную информацию о сертификате сотрудника по его уникальному идентификатору."
+    )]
     public async Task<ActionResult<CertificateResponse>> GetCertificate(Guid id)
     {
         var certificateResult = await _employeeCertificateService.GetCertificate(id);
@@ -60,6 +76,11 @@ public class CertificateController : ControllerBase
     }
 
     [HttpGet("by-employee/{employeeId}")]
+    [SwaggerOperation(
+        OperationId = "GetCertificateByEmployee",
+        Summary = "Получить все сертификаты сотрудника по Id сотрудника",
+        Description = "Возвращает список всех сертификатов, выданных конкретному сотруднику по его идентификатору."
+    )]
     public async Task<ActionResult<List<CertificateResponse>>> GetCertificateByEmployee(Guid employeeId)
     {
         var certificatesResult = await _employeeCertificateService.GetEmployeeCertificates(employeeId);
@@ -84,8 +105,13 @@ public class CertificateController : ControllerBase
         return Ok(response);
     }
 
-    [HttpGet("valid-on/{employeeId}/{asOfDate}")]
-    public async Task<ActionResult<List<CertificateResponse>>> GetCertificateValidOnDate(Guid employeeId, DateOnly days)
+    [HttpGet("valid-on/{employeeId}")]
+    [SwaggerOperation(
+        OperationId = "GetCertificateValidOnDate",
+        Summary = "Получить все сертификаты сотрудника по Id сотрудника на дату",
+        Description = "Возвращает сертификаты сотрудника, действительные на указанную дату. Используется для проверки актуальности сертификатов."
+    )]
+    public async Task<ActionResult<List<CertificateResponse>>> GetCertificateValidOnDate(Guid employeeId,[FromQuery] DateOnly days)
     {
         var certificatesResult = await _employeeCertificateService.GetEmployeeCertificatesValidOnDate(employeeId, days);
         if(certificatesResult.IsFailure)
@@ -110,6 +136,11 @@ public class CertificateController : ControllerBase
     }
 
     [HttpPost("filter")]
+    [SwaggerOperation(
+        OperationId = "CertificateFilter",
+        Summary = "Получить отфильтрованные сертификаты",
+        Description = "Позволяет получить список сертификатов по заданным фильтрам: имя сотрудника, организация, дата выдачи и срок действия."
+    )]
     public async Task<ActionResult<List<CertificateResponse>>> CertificateFilter(
         [FromBody] CertificateFilterRequest request)
     {

@@ -26,7 +26,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Employees.Core", "Modules\E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Employees.DataAccess", "Modules\Employees\Employees.DataAccess\Employees.DataAccess.csproj", "{40F552BB-529F-4226-9370-C2D0C4841F2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Employees.Infastructure", "Modules\Employees\Employees.Infastructure\Employees.Infastructure.csproj", "{796B1B85-4859-4371-BA8A-266C494900D6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Employees.Infrastructure", "Modules\Employees\Employees.Infrastructure\Employees.Infrastructure.csproj", "{796B1B85-4859-4371-BA8A-266C494900D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

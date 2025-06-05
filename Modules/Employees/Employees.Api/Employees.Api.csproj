@@ -11,6 +11,7 @@
       <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
       <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
+      <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="8.1.4" />
     </ItemGroup>
 
     <ItemGroup>

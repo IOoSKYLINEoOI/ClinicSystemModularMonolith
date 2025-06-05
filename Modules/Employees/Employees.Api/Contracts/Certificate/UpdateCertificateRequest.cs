@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Employees.Api.Contracts.EmployeeCertificate;
+namespace Employees.Api.Contracts.Certificate;
 
 public record UpdateCertificateRequest(
     [Required] Guid Id,
