@@ -8,14 +8,14 @@ public class PhoneNumber: ValueObject
     public string Value { get; }
     public bool IsValid { get; }
     public bool IsActual { get; }
-    public bool IsComfirmed { get; }
+    public bool IsConfirmed { get; }
     
     private PhoneNumber(string value, bool isValid, bool isActual, bool isComfirmed)
     {
         Value = value;
         IsValid = isValid;
         IsActual = isActual;
-        IsComfirmed = isComfirmed;
+        IsConfirmed = isComfirmed;
     }
     
     public static Result<PhoneNumber> Create(string value, bool isValid, bool isActual, bool isComfirmed)

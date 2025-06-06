@@ -35,8 +35,8 @@ public class UserConfiguration: IEntityTypeConfiguration<UserEntity>
                 .HasColumnName("PhoneNumberIsActual")
                 .IsRequired();
 
-            phone.Property(p => p.IsComfirmed)
-                .HasColumnName("PhoneNumberIsComfirmed")
+            phone.Property(p => p.IsConfirmed)
+                .HasColumnName("PhoneNumberIsConfirmed")
                 .IsRequired();
         });
 
