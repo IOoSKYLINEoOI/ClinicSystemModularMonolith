@@ -4,7 +4,7 @@ using Employees.Core.Models.Filter;
 
 namespace Employees.Core.Interfaces.Repositories;
 
-public interface IEmployeeLicenseRepository
+public interface ILicenseRepository
 {
     Task Add(EmployeeLicense license);
     Task<Result> Update(EmployeeLicense license);

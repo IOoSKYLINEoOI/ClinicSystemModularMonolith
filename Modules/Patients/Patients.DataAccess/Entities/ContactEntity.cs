@@ -9,5 +9,5 @@ public class ContactEntity
     public string? Email { get; set; }
     
     public required Guid PatientId { get; set; }
-    public required PatientEntity Patient { get; set; }
+    public PatientEntity Patient { get; set; } = null!;
 }

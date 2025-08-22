@@ -11,12 +11,12 @@ namespace Employees.Api.Controllers;
 [ApiExplorerSettings(GroupName = "Employees / LicenseController")]
 public class LicenseController: ControllerBase
 {
-    private readonly IEmployeeLicenseService _employeeLicenseService;
+    private readonly ILicenseService _licenseService;
     private readonly IMapper _mapper;
 
-    public LicenseController(IEmployeeLicenseService employeeLicenseService, IMapper mapper)
+    public LicenseController(ILicenseService licenseService, IMapper mapper)
     {
-        _employeeLicenseService = employeeLicenseService;
+        _licenseService = licenseService;
         _mapper = mapper;
     }
     
@@ -28,7 +28,7 @@ public class LicenseController: ControllerBase
     )]
     public async Task<IActionResult> AddNewLicense([FromBody] AddNewLicenseRequest request)
     {
-        var result = await _employeeLicenseService.AddLicense(
+        var result = await _licenseService.AddLicense(
             request.EmployeeId, 
             request.LicenseNumber,
             request.IssuedBy,
@@ -46,7 +46,7 @@ public class LicenseController: ControllerBase
     )]
     public async Task<IActionResult> UpdateLicense([FromBody] UpdateLicenseRequest request)
     {
-        var result = await _employeeLicenseService.UpdateLicense(
+        var result = await _licenseService.UpdateLicense(
             request.Id,
             request.LicenseNumber,
             request.IssuedBy,
@@ -63,7 +63,7 @@ public class LicenseController: ControllerBase
     )]
     public async Task<ActionResult<LicenseResponse>> GetLicense(Guid id)
     {
-        var certificateResult = await _employeeLicenseService.GetLicense(id);
+        var certificateResult = await _licenseService.GetLicense(id);
         if(certificateResult.IsFailure)
             return NotFound(certificateResult.Error);
         
@@ -80,7 +80,7 @@ public class LicenseController: ControllerBase
     )]
     public async Task<ActionResult<List<LicenseResponse>>> GetLicenseByEmployee(Guid employeeId)
     {
-        var certificatesResult = await _employeeLicenseService.GetEmployeeLicenses(employeeId);
+        var certificatesResult = await _licenseService.GetEmployeeLicenses(employeeId);
         if(certificatesResult.IsFailure)
             return NotFound(certificatesResult.Error);
         
@@ -97,7 +97,7 @@ public class LicenseController: ControllerBase
     )]
     public async Task<ActionResult<List<LicenseResponse>>> GetLicenseValidOnDate(Guid employeeId,[FromQuery] DateOnly days)
     {
-        var certificatesResult = await _employeeLicenseService.GetEmployeeLicensesValidOnDate(employeeId, days);
+        var certificatesResult = await _licenseService.GetEmployeeLicensesValidOnDate(employeeId, days);
         if(certificatesResult.IsFailure)
             return NotFound(certificatesResult.Error);
         
@@ -115,7 +115,7 @@ public class LicenseController: ControllerBase
     public async Task<ActionResult<List<LicenseResponse>>> LicenseFilter(
         [FromBody] LicenseFilterRequest request)
     {
-        var certificatesResult = await _employeeLicenseService.Filter(
+        var certificatesResult = await _licenseService.Filter(
             request.EmployeeId,
             request.LicenseNumber,
             request.IssuedBy,

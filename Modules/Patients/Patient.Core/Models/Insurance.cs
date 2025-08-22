@@ -60,4 +60,21 @@ public class Insurance
         
         return Result.Success(insurance);
     }
+
+    public static Insurance FromPersistence(
+        Guid id,
+        Guid patientId,
+        string insuranceCompany,
+        string policyNumber,
+        DateOnly validFrom,
+        DateOnly validTo)
+    {
+        return new Insurance(
+            id,
+            patientId,
+            insuranceCompany,
+            policyNumber,
+            validFrom,
+            validTo);
+    }
 }

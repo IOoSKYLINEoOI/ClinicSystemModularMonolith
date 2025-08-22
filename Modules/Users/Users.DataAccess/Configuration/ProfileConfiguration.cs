@@ -4,15 +4,15 @@ using Users.Domain.Entities;
 
 namespace Users.Domain.Configuration;
 
-public class UserProfileConfiguration : IEntityTypeConfiguration<UserProfileEntity>
+public class ProfileConfiguration : IEntityTypeConfiguration<ProfileEntity>
 {
-    public void Configure(EntityTypeBuilder<UserProfileEntity> builder)
+    public void Configure(EntityTypeBuilder<ProfileEntity> builder)
     {
         builder.HasKey(u => u.UserId);
         
         builder.HasOne(u => u.User)
             .WithOne(u => u.Profile)
-            .HasForeignKey<UserProfileEntity>(u => u.UserId)
+            .HasForeignKey<ProfileEntity>(u => u.UserId)
             .IsRequired();
         
         builder.Property(u => u.FirstName)
@@ -23,7 +23,7 @@ public class UserProfileConfiguration : IEntityTypeConfiguration<UserProfileEnti
             .HasMaxLength(100)
             .IsRequired();
 
-        builder.Property(u => u.FatherName)
+        builder.Property(u => u.MiddleName)
             .HasMaxLength(100);
         
         builder.Property(u => u.DateOfBirth)

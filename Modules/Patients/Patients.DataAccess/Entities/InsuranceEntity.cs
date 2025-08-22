@@ -9,6 +9,6 @@ public class InsuranceEntity
     public required DateOnly ValidTo { get; set; }        
     
     public required Guid PatientId { get; set; }
-    public required PatientEntity Patient { get; set; }
+    public PatientEntity Patient { get; set; } = null!;
 
 }

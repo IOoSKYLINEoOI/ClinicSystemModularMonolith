@@ -18,7 +18,7 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRoleEntity>
             .WithMany(r => r.UserRoles)
             .HasForeignKey(ur => ur.RoleId);
 
-        builder.Property(ur => ur.AssignedAt)
+        builder.Property(ur => ur.AssignedByUserId)
             .IsRequired();
 
         builder.Property(ur => ur.IsActive)

@@ -16,9 +16,9 @@ public static class EmployeePersistenceExtensions
                               ?? throw new InvalidOperationException(
                                   "Connection string 'ClinicModularContextPostgreSQL' not found.")));
         
-        services.AddScoped<IEmployeeAssignmentRepository, EmployeeAssignmentRepository>();
-        services.AddScoped<IEmployeeCertificateRepository, EmployeeCertificateRepository>();
-        services.AddScoped<IEmployeeLicenseRepository, EmployeeLicenseRepository>();
+        services.AddScoped<IAssignmentRepository, AssignmentRepository>();
+        services.AddScoped<ICertificateRepository, CertificateRepository>();
+        services.AddScoped<ILicenseRepository, LicenseRepository>();
         services.AddScoped<IEmployeeRepository, EmployeeRepository>();
         services.AddScoped<IPositionRepository, PositionRepository>();
         

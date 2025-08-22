@@ -42,7 +42,7 @@ public class UserConfiguration: IEntityTypeConfiguration<UserEntity>
 
         builder.HasOne(u => u.Profile)
             .WithOne(p => p.User)
-            .HasForeignKey<UserProfileEntity>(p => p.UserId)
+            .HasForeignKey<ProfileEntity>(p => p.UserId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 

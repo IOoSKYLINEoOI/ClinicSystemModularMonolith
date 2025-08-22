@@ -11,7 +11,7 @@ public class UserDbContext(
 ) : DbContext(options)
 {
     public DbSet<UserEntity> Users { get; set; }
-    public DbSet<UserProfileEntity> UserProfiles { get; set; }
+    public DbSet<ProfileEntity> Profiles { get; set; }
     
     public DbSet<RoleEntity> Roles { get; set; }
     public DbSet<PermissionEntity> Permissions { get; set; }
@@ -22,7 +22,7 @@ public class UserDbContext(
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new UserConfiguration());
-        modelBuilder.ApplyConfiguration(new UserProfileConfiguration());
+        modelBuilder.ApplyConfiguration(new ProfileConfiguration());
         modelBuilder.ApplyConfiguration(new RoleConfiguration());
         modelBuilder.ApplyConfiguration(new PermissionConfiguration());
         modelBuilder.ApplyConfiguration(new UserRoleConfiguration());

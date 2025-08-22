@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Employees.DataAccess.Configuration;
 
-public class EmployeeLicenseConfiguration : IEntityTypeConfiguration<EmployeeLicenseEntity>
+public class LicenseConfiguration : IEntityTypeConfiguration<LicenseEntity>
 {
-    public void Configure(EntityTypeBuilder<EmployeeLicenseEntity> builder)
+    public void Configure(EntityTypeBuilder<LicenseEntity> builder)
     {
         builder.HasKey(e => e.Id);
         
@@ -15,7 +15,7 @@ public class EmployeeLicenseConfiguration : IEntityTypeConfiguration<EmployeeLic
             .HasForeignKey(e => e.EmployeeId)
             .IsRequired();
         
-        builder.Property(e => e.LicenseNumber)
+        builder.Property(e => e.Number)
             .HasMaxLength(255)
             .IsRequired();
         

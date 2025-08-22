@@ -73,4 +73,29 @@ public class MedicalRecord
             updatedAt: now
         ));
     }
+
+    public static MedicalRecord FromPersistence(
+        Guid id,
+        Guid patientId,
+        Guid employeeId,
+        DateTime recordDate,
+        string diagnosis,
+        string? diagnosisCode,
+        string? notes,
+        Guid? appointmentId,
+        DateTime createdAt,
+        DateTime updatedAt)
+    {
+        return new MedicalRecord(
+            id,
+            patientId,
+            employeeId,
+            recordDate,
+            diagnosis,
+            diagnosisCode,
+            notes,
+            appointmentId,
+            createdAt,
+            updatedAt);
+    }
 }

@@ -6,14 +6,14 @@ using Employees.Core.Models.Filter;
 
 namespace Employees.Application.Services;
 
-public class EmployeeCertificateService : IEmployeeCertificateService
+public class CertificateService : ICertificateService
 {
-    private readonly IEmployeeCertificateRepository _employeeCertificateRepository;
+    private readonly ICertificateRepository _certificateRepository;
 
-    public EmployeeCertificateService(
-        IEmployeeCertificateRepository employeeCertificateRepository)
+    public CertificateService(
+        ICertificateRepository certificateRepository)
     {
-        _employeeCertificateRepository = employeeCertificateRepository;
+        _certificateRepository = certificateRepository;
     }
 
     public async Task<Result> AddCertificate(
@@ -34,7 +34,7 @@ public class EmployeeCertificateService : IEmployeeCertificateService
         if(certificateResult.IsFailure)
             return Result.Failure(certificateResult.Error);
         
-        await _employeeCertificateRepository.Add(certificateResult.Value);
+        await _certificateRepository.Add(certificateResult.Value);
         return Result.Success();
     }
 
@@ -44,7 +44,7 @@ public class EmployeeCertificateService : IEmployeeCertificateService
         string issuedBy,
         DateOnly? validUntil)
     {
-        var certificateResult = await _employeeCertificateRepository.GetById(id);
+        var certificateResult = await _certificateRepository.GetById(id);
         if (certificateResult.IsFailure)
             return Result.Failure(certificateResult.Error);
 
@@ -59,22 +59,22 @@ public class EmployeeCertificateService : IEmployeeCertificateService
         if (certificateUpdateResult.IsFailure)
             return Result.Failure(certificateUpdateResult.Error);
 
-        return await _employeeCertificateRepository.Update(certificateUpdateResult.Value);
+        return await _certificateRepository.Update(certificateUpdateResult.Value);
     }
 
     public async Task<Result<EmployeeCertificate>> GetCertificate(Guid id)
     {
-        return await _employeeCertificateRepository.GetById(id);
+        return await _certificateRepository.GetById(id);
     }
 
     public async Task<Result<List<EmployeeCertificate>>> GetEmployeeCertificates(Guid employeeId)
     {
-        return await _employeeCertificateRepository.GetByEmployeeId(employeeId);
+        return await _certificateRepository.GetByEmployeeId(employeeId);
     }
     
     public async Task<Result<List<EmployeeCertificate>>> GetEmployeeCertificatesValidOnDate(Guid employeeId, DateOnly asOfDate)
     {
-        return await _employeeCertificateRepository.GetValidCertificates(employeeId, asOfDate);
+        return await _certificateRepository.GetValidCertificates(employeeId, asOfDate);
     }
     
     public async Task<Result<List<EmployeeCertificate>>> Filter(
@@ -98,6 +98,6 @@ public class EmployeeCertificateService : IEmployeeCertificateService
         if(employeeCertificateFilter.IsFailure)
             return Result.Failure<List<EmployeeCertificate>>(employeeCertificateFilter.Error);
         
-        return await _employeeCertificateRepository.Filter(employeeCertificateFilter.Value);
+        return await _certificateRepository.Filter(employeeCertificateFilter.Value);
     }
 }

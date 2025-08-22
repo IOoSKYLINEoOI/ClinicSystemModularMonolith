@@ -1,6 +1,6 @@
 namespace Employees.DataAccess.Entities;
 
-public class EmployeeCertificateEntity
+public class CertificateEntity
 {
     public Guid Id { get; set; }
     

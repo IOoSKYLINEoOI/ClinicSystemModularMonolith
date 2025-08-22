@@ -4,7 +4,7 @@ using Employees.Core.Models.Filter;
 
 namespace Employees.Core.Interfaces.Repositories;
 
-public interface IEmployeeCertificateRepository
+public interface ICertificateRepository
 {
     Task Add(EmployeeCertificate certificate);
     Task<Result> Update(EmployeeCertificate certificate);

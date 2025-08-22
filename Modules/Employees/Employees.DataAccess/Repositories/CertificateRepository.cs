@@ -7,18 +7,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Employees.DataAccess.Repositories;
 
-public class EmployeeCertificateRepository : IEmployeeCertificateRepository
+public class CertificateRepository : ICertificateRepository
 {
     private readonly EmployeeDbContext _context;
 
-    public EmployeeCertificateRepository(EmployeeDbContext context)
+    public CertificateRepository(EmployeeDbContext context)
     {
         _context = context;
     }
 
     public async Task Add(EmployeeCertificate certificate)
     {
-        var certificateEntity = new EmployeeCertificateEntity()
+        var certificateEntity = new CertificateEntity()
         {
             Id = certificate.Id,
             EmployeeId = certificate.EmployeeId,

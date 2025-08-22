@@ -3,7 +3,8 @@ using Patient.Core.Enums;
 
 namespace Patient.Core.ValueObjects;
 
-public class BloodProfile : ValueObject<BloodProfile>
+public class 
+    BloodProfile : ValueObject<BloodProfile>
 {
     private BloodProfile(BloodGroup type, RhFactor rh, KellFactor kell)
     {

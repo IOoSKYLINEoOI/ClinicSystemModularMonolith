@@ -7,22 +7,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Employees.DataAccess.Repositories;
 
-public class EmployeeLicenseRepository : IEmployeeLicenseRepository
+public class LicenseRepository : ILicenseRepository
 {
     private readonly EmployeeDbContext _context;
 
-    public EmployeeLicenseRepository(EmployeeDbContext context)
+    public LicenseRepository(EmployeeDbContext context)
     {
         _context = context;
     }
     
         public async Task Add(EmployeeLicense license)
     {
-        var licenseEntity = new EmployeeLicenseEntity()
+        var licenseEntity = new LicenseEntity()
         {
             Id = license.Id,
             EmployeeId = license.EmployeeId,
-            LicenseNumber = license.LicenseNumber,
+            Number = license.LicenseNumber,
             IssuedBy = license.IssuedBy,
             IssuedAt = license.IssuedAt,
             ValidUntil = license.ValidUntil
@@ -40,7 +40,7 @@ public class EmployeeLicenseRepository : IEmployeeLicenseRepository
         if (licenseEntity is null)
             return Result.Failure<EmployeeLicense>("License not found or deleted.");
         
-        licenseEntity.LicenseNumber = license.LicenseNumber;
+        licenseEntity.Number = license.LicenseNumber;
         licenseEntity.IssuedBy = license.IssuedBy;
         licenseEntity.IssuedAt = license.IssuedAt;
         licenseEntity.ValidUntil = license.ValidUntil;
@@ -63,7 +63,7 @@ public class EmployeeLicenseRepository : IEmployeeLicenseRepository
             EmployeeLicense.Create(
                 employeeLicenseEntity.Id, 
                 employeeLicenseEntity.EmployeeId,
-                employeeLicenseEntity.LicenseNumber,
+                employeeLicenseEntity.Number,
                 employeeLicenseEntity.IssuedBy,
                 employeeLicenseEntity.IssuedAt,
                 employeeLicenseEntity.ValidUntil);
@@ -91,7 +91,7 @@ public class EmployeeLicenseRepository : IEmployeeLicenseRepository
             var employeeLicenseResult = EmployeeLicense.Create(
                 employeeLicenseEntity.Id,
                 employeeLicenseEntity.EmployeeId,
-                employeeLicenseEntity.LicenseNumber,
+                employeeLicenseEntity.Number,
                 employeeLicenseEntity.IssuedBy,
                 employeeLicenseEntity.IssuedAt,
                 employeeLicenseEntity.ValidUntil);
@@ -122,7 +122,7 @@ public class EmployeeLicenseRepository : IEmployeeLicenseRepository
             var employeeLicenseResult = EmployeeLicense.Create(
                 employeeLicenseEntity.Id,
                 employeeLicenseEntity.EmployeeId,
-                employeeLicenseEntity.LicenseNumber,
+                employeeLicenseEntity.Number,
                 employeeLicenseEntity.IssuedBy,
                 employeeLicenseEntity.IssuedAt,
                 employeeLicenseEntity.ValidUntil);
@@ -146,7 +146,7 @@ public class EmployeeLicenseRepository : IEmployeeLicenseRepository
             query = query.Where(e => e.EmployeeId == filter.EmployeeId.Value);
 
         if (!string.IsNullOrWhiteSpace(filter.LicenseNumber))
-            query = query.Where(e => EF.Functions.ILike(e.LicenseNumber, $"%{filter.LicenseNumber}%"));
+            query = query.Where(e => EF.Functions.ILike(e.Number, $"%{filter.LicenseNumber}%"));
 
         if (!string.IsNullOrWhiteSpace(filter.IssuedBy))
             query = query.Where(e => EF.Functions.ILike(e.IssuedBy, $"%{filter.IssuedBy}%"));
@@ -172,7 +172,7 @@ public class EmployeeLicenseRepository : IEmployeeLicenseRepository
             var model = EmployeeLicense.Create(
                 entity.Id,
                 entity.EmployeeId,
-                entity.LicenseNumber,
+                entity.Number,
                 entity.IssuedBy,
                 entity.IssuedAt,
                 entity.ValidUntil);

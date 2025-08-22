@@ -6,18 +6,18 @@ namespace Employees.DataAccess;
 
 public class EmployeeDbContext(DbContextOptions<EmployeeDbContext> options) : DbContext(options)
 {
-    public DbSet<EmployeeAssignmentEntity> EmployeeAssignments { get; set; }
-    public DbSet<EmployeeCertificateEntity> EmployeeCertificates { get; set; }
+    public DbSet<AssignmentEntity> EmployeeAssignments { get; set; }
+    public DbSet<CertificateEntity> EmployeeCertificates { get; set; }
     public DbSet<EmployeeEntity> Employees { get; set; }
-    public DbSet<EmployeeLicenseEntity> EmployeeLicenses { get; set; }
+    public DbSet<LicenseEntity> EmployeeLicenses { get; set; }
     public DbSet<PositionEntity> Positions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new EmployeeAssignmentConfiguration());
-        modelBuilder.ApplyConfiguration(new EmployeeCertificateConfiguration());
+        modelBuilder.ApplyConfiguration(new AssignmentConfiguration());
+        modelBuilder.ApplyConfiguration(new CertificateConfiguration());
         modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
-        modelBuilder.ApplyConfiguration(new EmployeeLicenseConfiguration());
+        modelBuilder.ApplyConfiguration(new LicenseConfiguration());
         modelBuilder.ApplyConfiguration(new PositionConfiguration());
     }
 }

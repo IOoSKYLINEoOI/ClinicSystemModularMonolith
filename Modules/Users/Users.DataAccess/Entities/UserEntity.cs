@@ -10,6 +10,6 @@ public class UserEntity
     public string PasswordHash { get; set; } = null!;
     public bool IsActive { get; set; } = true;
     
-    public UserProfileEntity Profile { get; set; } = null!;
+    public ProfileEntity Profile { get; set; } = null!;
     public ICollection<UserRoleEntity> UserRoles { get; set; } = new List<UserRoleEntity>();
 }

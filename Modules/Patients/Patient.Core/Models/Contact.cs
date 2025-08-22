@@ -68,4 +68,21 @@ public class Contact
         
         return Result.Success(contact);
     }
+
+    public static Contact FromPersistence(
+        Guid id,
+        Guid patientId,
+        string contactName,
+        string relationship,
+        string phone,
+        string? email)
+    {
+        return new Contact(
+            id,
+            patientId,
+            contactName,
+            relationship,
+            phone,
+            email);
+    }
 }

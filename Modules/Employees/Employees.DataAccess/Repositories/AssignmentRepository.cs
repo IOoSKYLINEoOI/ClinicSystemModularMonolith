@@ -6,18 +6,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Employees.DataAccess.Repositories;
 
-public class EmployeeAssignmentRepository : IEmployeeAssignmentRepository
+public class AssignmentRepository : IAssignmentRepository
 {
     private readonly EmployeeDbContext _context;
 
-    public EmployeeAssignmentRepository(EmployeeDbContext context)
+    public AssignmentRepository(EmployeeDbContext context)
     {
         _context = context;
     }
 
     public async Task<Result> Add(EmployeeAssignment assignment)
     {
-        var assignmentEntity = new EmployeeAssignmentEntity()
+        var assignmentEntity = new AssignmentEntity()
         {
             Id = assignment.Id,
             EmployeeId = assignment.EmployeeId,

@@ -1,6 +1,6 @@
 namespace Employees.DataAccess.Entities;
 
-public class EmployeeAssignmentEntity
+public class AssignmentEntity
 {
     public Guid Id { get; set; }
     

@@ -3,7 +3,7 @@ using Employees.Core.Models;
 
 namespace Employees.Core.Interfaces.Services;
 
-public interface IEmployeeLicenseService
+public interface ILicenseService
 {
     Task<Result> AddLicense(
         Guid employeeId,

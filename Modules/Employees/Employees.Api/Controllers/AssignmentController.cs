@@ -11,12 +11,12 @@ namespace Employees.Api.Controllers;
 [ApiExplorerSettings(GroupName = "Employees / AssignmentController")]
 public class AssignmentController : ControllerBase
 {
-    private readonly IEmployeeAssignmentService _employeeAssignmentService;
+    private readonly IAssignmentService _assignmentService;
     private readonly IMapper _mapper;
 
-    public AssignmentController(IEmployeeAssignmentService employeeAssignmentService, IMapper mapper)
+    public AssignmentController(IAssignmentService assignmentService, IMapper mapper)
     {
-        _employeeAssignmentService = employeeAssignmentService;
+        _assignmentService = assignmentService;
         _mapper = mapper;
     }
 
@@ -28,7 +28,7 @@ public class AssignmentController : ControllerBase
     )]
     public async Task<IActionResult> AddNewAssignment([FromBody] AddNewAssignmentRequest request)
     {
-        var result = await _employeeAssignmentService.AddAssignment(
+        var result = await _assignmentService.AddAssignment(
             request.EmployeeId,
             request.PositionId,
             request.DepartmentId,
@@ -46,7 +46,7 @@ public class AssignmentController : ControllerBase
     )]
     public async Task<IActionResult> UpdateAssignment([FromBody] UpdateAssignmentRequest request)
     {
-        var result = await _employeeAssignmentService.UpdateAssignment(
+        var result = await _assignmentService.UpdateAssignment(
             request.Id,
             request.EmployeeId,
             request.PositionId,
@@ -65,7 +65,7 @@ public class AssignmentController : ControllerBase
     )]
     public async Task<ActionResult<AssignmentResponse>> GetAssignment(Guid id)
     {
-        var assignmentResult = await _employeeAssignmentService.GetAssignment(id);
+        var assignmentResult = await _assignmentService.GetAssignment(id);
         if(assignmentResult.IsFailure)
             return NotFound(assignmentResult.Error);
         
@@ -82,7 +82,7 @@ public class AssignmentController : ControllerBase
     )]
     public async Task<ActionResult<List<AssignmentResponse>>> GetAssignmentByEmployee(Guid employeeId)
     {
-        var assignmentResult = await _employeeAssignmentService.GetEmployeeAssignments(employeeId);
+        var assignmentResult = await _assignmentService.GetEmployeeAssignments(employeeId);
         if(assignmentResult.IsFailure)
             return NotFound(assignmentResult.Error);
         
@@ -99,7 +99,7 @@ public class AssignmentController : ControllerBase
     )]
     public async Task<ActionResult<List<AssignmentResponse>>> GetAssignmentByDepartmentOnDate(Guid employeeId,[FromQuery] DateOnly onDate)
     {
-        var assignmentResult = await _employeeAssignmentService.GetEmployeeByDepartmentAssignments(employeeId, onDate);
+        var assignmentResult = await _assignmentService.GetEmployeeByDepartmentAssignments(employeeId, onDate);
         if(assignmentResult.IsFailure)
             return NotFound(assignmentResult.Error);
         
@@ -116,7 +116,7 @@ public class AssignmentController : ControllerBase
     )]
     public async Task<ActionResult<List<AssignmentResponse>>> GetAssignmentAll()
     {
-        var assignmentResult = await _employeeAssignmentService.GetAllEmployeeAssignment();
+        var assignmentResult = await _assignmentService.GetAllEmployeeAssignment();
         if(assignmentResult.IsFailure)
             return NotFound(assignmentResult.Error);
         

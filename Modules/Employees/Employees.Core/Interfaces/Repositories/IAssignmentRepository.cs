@@ -3,7 +3,7 @@ using Employees.Core.Models;
 
 namespace Employees.Core.Interfaces.Repositories;
 
-public interface IEmployeeAssignmentRepository
+public interface IAssignmentRepository
 {
     Task<Result> Add(EmployeeAssignment assignment);
     Task<Result> Update(EmployeeAssignment assignment);

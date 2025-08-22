@@ -10,11 +10,11 @@ namespace Employees.Api.Controllers;
 [ApiExplorerSettings(GroupName = "Employees / CertificateController")]
 public class CertificateController : ControllerBase
 {
-    private readonly IEmployeeCertificateService _employeeCertificateService;
+    private readonly ICertificateService _certificateService;
 
-    public CertificateController(IEmployeeCertificateService employeeCertificateService)
+    public CertificateController(ICertificateService certificateService)
     {
-        _employeeCertificateService = employeeCertificateService;
+        _certificateService = certificateService;
     }
 
     [HttpPost]
@@ -25,7 +25,7 @@ public class CertificateController : ControllerBase
     )]
     public async Task<IActionResult> AddNewCertificate([FromBody] AddNewCertificateRequest request)
     {
-        var result = await _employeeCertificateService.AddCertificate(
+        var result = await _certificateService.AddCertificate(
             request.EmployeeId, 
             request.Name,
             request.IssuedBy,
@@ -43,7 +43,7 @@ public class CertificateController : ControllerBase
     )]
     public async Task<IActionResult> UpdateCertificate([FromBody] UpdateCertificateRequest request)
     {
-        var result = await _employeeCertificateService.UpdateCertificate(
+        var result = await _certificateService.UpdateCertificate(
             request.Id,
             request.Name,
             request.IssuedBy,
@@ -60,7 +60,7 @@ public class CertificateController : ControllerBase
     )]
     public async Task<ActionResult<CertificateResponse>> GetCertificate(Guid id)
     {
-        var certificateResult = await _employeeCertificateService.GetCertificate(id);
+        var certificateResult = await _certificateService.GetCertificate(id);
         if(certificateResult.IsFailure)
             return NotFound(certificateResult.Error);
         
@@ -83,7 +83,7 @@ public class CertificateController : ControllerBase
     )]
     public async Task<ActionResult<List<CertificateResponse>>> GetCertificateByEmployee(Guid employeeId)
     {
-        var certificatesResult = await _employeeCertificateService.GetEmployeeCertificates(employeeId);
+        var certificatesResult = await _certificateService.GetEmployeeCertificates(employeeId);
         if(certificatesResult.IsFailure)
             return NotFound(certificatesResult.Error);
         
@@ -113,7 +113,7 @@ public class CertificateController : ControllerBase
     )]
     public async Task<ActionResult<List<CertificateResponse>>> GetCertificateValidOnDate(Guid employeeId,[FromQuery] DateOnly days)
     {
-        var certificatesResult = await _employeeCertificateService.GetEmployeeCertificatesValidOnDate(employeeId, days);
+        var certificatesResult = await _certificateService.GetEmployeeCertificatesValidOnDate(employeeId, days);
         if(certificatesResult.IsFailure)
             return NotFound(certificatesResult.Error);
         
@@ -144,7 +144,7 @@ public class CertificateController : ControllerBase
     public async Task<ActionResult<List<CertificateResponse>>> CertificateFilter(
         [FromBody] CertificateFilterRequest request)
     {
-        var certificatesResult = await _employeeCertificateService.Filter(
+        var certificatesResult = await _certificateService.Filter(
             request.EmployeeId,
             request.Name,
             request.IssuedBy,

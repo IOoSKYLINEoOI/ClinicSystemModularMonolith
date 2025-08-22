@@ -5,5 +5,5 @@ public class PositionEntity
     public int Id { get; set; }
     public string Name { get; set; } = null!;
     
-    public ICollection<EmployeeAssignmentEntity> Assignments { get; set; } = new List<EmployeeAssignmentEntity>();
+    public ICollection<AssignmentEntity> Assignments { get; set; } = new List<AssignmentEntity>();
 }

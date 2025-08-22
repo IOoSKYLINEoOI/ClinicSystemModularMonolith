@@ -10,7 +10,7 @@ public class EmployeeEntity
     
     public bool IsActive { get; set; }
     
-    public ICollection<EmployeeAssignmentEntity> EmployeeAssignments { get; set; } = new List<EmployeeAssignmentEntity>();
-    public ICollection<EmployeeLicenseEntity> EmployeeLicenses { get; set; } = new List<EmployeeLicenseEntity>();
-    public ICollection<EmployeeCertificateEntity> EmployeeCertificates { get; set; } = new List<EmployeeCertificateEntity>();
+    public ICollection<AssignmentEntity> EmployeeAssignments { get; set; } = new List<AssignmentEntity>();
+    public ICollection<LicenseEntity> EmployeeLicenses { get; set; } = new List<LicenseEntity>();
+    public ICollection<CertificateEntity> EmployeeCertificates { get; set; } = new List<CertificateEntity>();
 }

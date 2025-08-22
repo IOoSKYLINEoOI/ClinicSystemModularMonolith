@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Employees.DataAccess.Configuration;
 
-public class EmployeeAssignmentConfiguration : IEntityTypeConfiguration<EmployeeAssignmentEntity>
+public class AssignmentConfiguration : IEntityTypeConfiguration<AssignmentEntity>
 {
-    public void Configure(EntityTypeBuilder<EmployeeAssignmentEntity> builder)
+    public void Configure(EntityTypeBuilder<AssignmentEntity> builder)
     {
         builder.HasKey(x => x.Id);
 

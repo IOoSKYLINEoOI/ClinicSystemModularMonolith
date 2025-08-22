@@ -3,7 +3,7 @@ using Employees.Core.Models;
 
 namespace Employees.Core.Interfaces.Services;
 
-public interface IEmployeeCertificateService
+public interface ICertificateService
 {
     Task<Result> AddCertificate(
         Guid employeeId,

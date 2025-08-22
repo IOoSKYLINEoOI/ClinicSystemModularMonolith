@@ -3,7 +3,7 @@ using Employees.Core.Models;
 
 namespace Employees.Core.Interfaces.Services;
 
-public interface IEmployeeAssignmentService
+public interface IAssignmentService
 {
     Task<Result> AddAssignment(
         Guid employeeId,

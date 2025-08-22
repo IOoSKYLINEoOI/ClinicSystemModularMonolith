@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Employees.DataAccess.Configuration;
 
-public class EmployeeCertificateConfiguration : IEntityTypeConfiguration<EmployeeCertificateEntity>
+public class CertificateConfiguration : IEntityTypeConfiguration<CertificateEntity>
 {
-    public void Configure(EntityTypeBuilder<EmployeeCertificateEntity> builder)
+    public void Configure(EntityTypeBuilder<CertificateEntity> builder)
     {
         builder.HasKey(x => x.Id);
 

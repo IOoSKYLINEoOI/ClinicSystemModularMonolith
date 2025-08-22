@@ -29,11 +29,11 @@ public class UserRepository : IUsersRepository
             PhoneNumber = user.PhoneNumber,
             PasswordHash = user.PasswordHash,
             
-            Profile = new UserProfileEntity()
+            Profile = new ProfileEntity()
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                FatherName = user.FatherName,
+                MiddleName = user.FatherName,
                 DateOfBirth = user.DateOfBirth,
                 Gender = user.Gender
             }
@@ -62,7 +62,7 @@ public class UserRepository : IUsersRepository
             userEntity.Id,
             userEntity.Profile.FirstName,
             userEntity.Profile.LastName,
-            userEntity.Profile.FatherName,
+            userEntity.Profile.MiddleName,
             userEntity.Profile.DateOfBirth,
             userEntity.Profile.Gender,
             userEntity.Email,
@@ -96,7 +96,7 @@ public class UserRepository : IUsersRepository
 
         user.Profile.FirstName = firstName;
         user.Profile.LastName = lastName;
-        user.Profile.FatherName = fatherName;
+        user.Profile.MiddleName = fatherName;
         user.Profile.DateOfBirth = dateOfBirth;
 
         await _context.SaveChangesAsync();
@@ -113,7 +113,7 @@ public class UserRepository : IUsersRepository
             userEntity.Id,
             userEntity.Profile.FirstName,
             userEntity.Profile.LastName,
-            userEntity.Profile.FatherName,
+            userEntity.Profile.MiddleName,
             userEntity.Profile.DateOfBirth,
             userEntity.Profile.Gender,
             userEntity.Email,

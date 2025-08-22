@@ -6,13 +6,13 @@ using Employees.Core.Models.Filter;
 
 namespace Employees.Application.Services;
 
-public class EmployeeLicenseService : IEmployeeLicenseService
+public class LicenseService : ILicenseService
 {
-    private readonly IEmployeeLicenseRepository _employeeLicenseRepository;
+    private readonly ILicenseRepository _licenseRepository;
 
-    public EmployeeLicenseService(IEmployeeLicenseRepository employeeLicenseRepository)
+    public LicenseService(ILicenseRepository licenseRepository)
     {
-        _employeeLicenseRepository = employeeLicenseRepository;
+        _licenseRepository = licenseRepository;
     }
 
     public async Task<Result> AddLicense(
@@ -33,7 +33,7 @@ public class EmployeeLicenseService : IEmployeeLicenseService
         if(licenseResult.IsFailure)
             return Result.Failure(licenseResult.Error);
         
-        await _employeeLicenseRepository.Add(licenseResult.Value);
+        await _licenseRepository.Add(licenseResult.Value);
         return Result.Success();
     }
 
@@ -43,7 +43,7 @@ public class EmployeeLicenseService : IEmployeeLicenseService
         string issuedBy,
         DateOnly? validUntil)
     {
-        var licenseResult = await _employeeLicenseRepository.GetById(id);
+        var licenseResult = await _licenseRepository.GetById(id);
         if(licenseResult.IsFailure)
             return Result.Failure(licenseResult.Error);
 
@@ -58,22 +58,22 @@ public class EmployeeLicenseService : IEmployeeLicenseService
         if(licenseUpdateResult.IsFailure)
             return Result.Failure(licenseUpdateResult.Error);
         
-        return await _employeeLicenseRepository.Update(licenseUpdateResult.Value);
+        return await _licenseRepository.Update(licenseUpdateResult.Value);
     }
     
     public async Task<Result<EmployeeLicense>> GetLicense(Guid id)
     {
-        return await _employeeLicenseRepository.GetById(id);
+        return await _licenseRepository.GetById(id);
     }
 
     public async Task<Result<List<EmployeeLicense>>> GetEmployeeLicenses(Guid employeeId)
     {
-        return await _employeeLicenseRepository.GetByEmployeeId(employeeId);
+        return await _licenseRepository.GetByEmployeeId(employeeId);
     }
     
     public async Task<Result<List<EmployeeLicense>>> GetEmployeeLicensesValidOnDate(Guid employeeId, DateOnly asOfDate)
     {
-        return await _employeeLicenseRepository.GetValidLicenses(employeeId, asOfDate);
+        return await _licenseRepository.GetValidLicenses(employeeId, asOfDate);
     }
     
     public async Task<Result<List<EmployeeLicense>>> Filter(
@@ -97,6 +97,6 @@ public class EmployeeLicenseService : IEmployeeLicenseService
         if(employeeLicenseFilter.IsFailure)
             return Result.Failure<List<EmployeeLicense>>(employeeLicenseFilter.Error);
         
-        return await _employeeLicenseRepository.Filter(employeeLicenseFilter.Value);
+        return await _licenseRepository.Filter(employeeLicenseFilter.Value);
     }
 }

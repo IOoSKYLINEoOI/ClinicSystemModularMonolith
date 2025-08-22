@@ -5,13 +5,13 @@ using Employees.Core.Models;
 
 namespace Employees.Application.Services;
 
-public class EmployeeAssignmentService : IEmployeeAssignmentService
+public class AssignmentService : IAssignmentService
 {
-    private readonly IEmployeeAssignmentRepository _employeeAssignmentRepository;
+    private readonly IAssignmentRepository _assignmentRepository;
 
-    public EmployeeAssignmentService(IEmployeeAssignmentRepository employeeAssignmentRepository)
+    public AssignmentService(IAssignmentRepository assignmentRepository)
     {
-        _employeeAssignmentRepository = employeeAssignmentRepository;
+        _assignmentRepository = assignmentRepository;
     }
 
     public async Task<Result> AddAssignment(
@@ -33,7 +33,7 @@ public class EmployeeAssignmentService : IEmployeeAssignmentService
         if(assignmentResult.IsFailure)
             return Result.Failure(assignmentResult.Error);
         
-        await _employeeAssignmentRepository.Add(assignmentResult.Value);
+        await _assignmentRepository.Add(assignmentResult.Value);
         
         return Result.Success();
     }
@@ -46,7 +46,7 @@ public class EmployeeAssignmentService : IEmployeeAssignmentService
         DateOnly assignedAt,
         DateOnly? removedAt)
     {
-        var assignmentResult = await _employeeAssignmentRepository.GetById(id);
+        var assignmentResult = await _assignmentRepository.GetById(id);
         if(assignmentResult.IsFailure)
             return Result.Failure(assignmentResult.Error);
         
@@ -60,27 +60,27 @@ public class EmployeeAssignmentService : IEmployeeAssignmentService
         if(assignmentUpdateResult.IsFailure)
             return Result.Failure(assignmentUpdateResult.Error);
         
-        return await _employeeAssignmentRepository.Update(assignmentUpdateResult.Value);
+        return await _assignmentRepository.Update(assignmentUpdateResult.Value);
     }
 
     public async Task<Result<EmployeeAssignment>> GetAssignment(Guid employeeId)
     {
-        return await _employeeAssignmentRepository.GetById(employeeId);
+        return await _assignmentRepository.GetById(employeeId);
     }
 
     public async Task<Result<List<EmployeeAssignment>>> GetEmployeeAssignments(Guid employeeId)
     {
-        return await _employeeAssignmentRepository.GetByEmployeeId(employeeId);
+        return await _assignmentRepository.GetByEmployeeId(employeeId);
     }
 
     public async Task<Result<List<EmployeeAssignment>>> GetEmployeeByDepartmentAssignments(Guid departmentId,
         DateOnly onDate)
     {
-        return await _employeeAssignmentRepository.GetActiveByDepartment(departmentId, onDate);
+        return await _assignmentRepository.GetActiveByDepartment(departmentId, onDate);
     }
 
     public async Task<Result<List<EmployeeAssignment>>> GetAllEmployeeAssignment()
     {
-        return await _employeeAssignmentRepository.GetAll();
+        return await _assignmentRepository.GetAll();
     }
 }
