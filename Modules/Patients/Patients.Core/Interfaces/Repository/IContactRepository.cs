@@ -1,6 +1,6 @@
-using Patient.Core.Models;
+using Patients.Core.Models;
 
-namespace Patient.Core.Interfaces.Repository;
+namespace Patients.Core.Interfaces.Repository;
 
 public interface IContactRepository
 {

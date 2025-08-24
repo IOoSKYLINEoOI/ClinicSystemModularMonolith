@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Patient.Core.Interfaces.Repository;
-using Patient.Core.Models;
+using Patients.Core.Interfaces.Repository;
+using Patients.Core.Models;
 using Patients.DataAccess.Entities;
 
 namespace Patients.DataAccess.Repositories;

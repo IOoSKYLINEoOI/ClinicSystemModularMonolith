@@ -8,14 +8,14 @@ public class PatientDbContext(DbContextOptions<PatientDbContext> options) : DbCo
 {
     public DbSet<ContactEntity> Contacts { get; set; }
     public DbSet<InsuranceEntity> Insurances { get; set; }
-    public DbSet<MedicalRecordEntity> MedicalRecords { get; set; }
     public DbSet<PatientEntity> Patients { get; set; }
+    public DbSet<QuestionnaireEntity> Questionnaires { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new ContactConfiguration());
         modelBuilder.ApplyConfiguration(new InsuranceConfiguration());
-        modelBuilder.ApplyConfiguration(new MedicalRecordConfiguration());
         modelBuilder.ApplyConfiguration(new PatientConfiguration());
+        modelBuilder.ApplyConfiguration(new QuestionnaireConfiguration());
     }
 }

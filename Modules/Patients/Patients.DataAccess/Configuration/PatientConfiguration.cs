@@ -12,19 +12,7 @@ public class PatientConfiguration: IEntityTypeConfiguration<PatientEntity>
 
         builder.Property(u => u.UserId)
             .IsRequired();
-
-        builder.Property(u => u.Allergies)
-            .HasMaxLength(255);
-
-        builder.Property(u => u.CurrentMedications)
-            .HasMaxLength(255);
-
-        builder.Property(u => u.HeightCm)
-            .HasPrecision(5, 2); 
-
-        builder.Property(u => u.WeightKg)
-            .HasPrecision(5, 2); 
-
+        
         builder.Property(u => u.CreatedAt)
             .IsRequired();
 
@@ -32,27 +20,26 @@ public class PatientConfiguration: IEntityTypeConfiguration<PatientEntity>
             .IsRequired();
         
         
-        builder.OwnsOne(u => u.BloodProfile, bp =>
+        builder.OwnsOne(u => u.BloodProfileEntity, bp =>
         {
             bp.Property(b => b.Type).IsRequired();
             bp.Property(b => b.Rh).IsRequired();
             bp.Property(b => b.Kell).IsRequired();
         });
-        
 
-        builder.HasMany(u => u.PatientMedicalRecords)
-            .WithOne(r => r.Patient)
-            .HasForeignKey(r => r.PatientId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasMany(u => u.PatientContacts)
+        builder.HasMany(u => u.Contacts)
             .WithOne(c => c.Patient)
             .HasForeignKey(c => c.PatientId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(u => u.PatientInsurance)
+        builder.HasOne(u => u.Insurance)
             .WithOne(i => i.Patient)
             .HasForeignKey<InsuranceEntity>(i => i.PatientId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.HasOne(u => u.Questionnaire)
+            .WithOne(i => i.Patient)
+            .HasForeignKey<QuestionnaireEntity>(i => i.PatientId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

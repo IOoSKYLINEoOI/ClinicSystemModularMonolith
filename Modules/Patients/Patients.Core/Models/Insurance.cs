@@ -1,6 +1,6 @@
 using CSharpFunctionalExtensions;
 
-namespace Patient.Core.Models;
+namespace Patients.Core.Models;
 
 public class Insurance
 {

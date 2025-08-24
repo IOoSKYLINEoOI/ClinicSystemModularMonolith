@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Patient.Core.Models;
+using Patients.Core.Models;
 using Patients.DataAccess.Entities;
 
 namespace Patients.DataAccess.Repositories;
@@ -48,7 +48,9 @@ public class InsuranceRepository
 
     public async Task<Insurance?> GetById(Guid id)
     {
-        var insuranceEntity = await _context.Insurances.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
+        var insuranceEntity = await _context.Insurances
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Id == id);
 
         return insuranceEntity == null ? null : MapToDomain(insuranceEntity);
     }

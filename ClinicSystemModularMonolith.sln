@@ -34,11 +34,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patients.Api", "Modules\Pat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patients.Application", "Modules\Patients\Patients.Application\Patients.Application.csproj", "{95C1BC83-2FD7-4B53-BFA8-7CBF4743B00A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patient.Core", "Modules\Patients\Patient.Core\Patient.Core.csproj", "{616909B4-12AA-4370-82BB-949FDED8D04C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patients.Core", "Modules\Patients\Patients.Core\Patients.Core.csproj", "{616909B4-12AA-4370-82BB-949FDED8D04C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patients.DataAccess", "Modules\Patients\Patients.DataAccess\Patients.DataAccess.csproj", "{155EDFCB-7F60-4D0D-9186-A916B87C0F86}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patients.Infrastructure", "Modules\Patients\Patients.Infrastructure\Patients.Infrastructure.csproj", "{7AC6229B-944A-4E35-91C2-2D9C43CA07AD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Appointments", "Appointments", "{B6E350ED-695C-421D-98CC-789E6B07D837}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appointments.DataAccess", "Modules\Appointments\Appointments.DataAccess\Appointments.DataAccess.csproj", "{703F09BD-0C41-4B73-B162-A92A0430E46D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appointments.Core", "Modules\Appointments\Appointments.Core\Appointments.Core.csproj", "{880F5709-8DD9-4DBE-BCDC-58655E0AAFC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -110,6 +116,14 @@ Global
 		{7AC6229B-944A-4E35-91C2-2D9C43CA07AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AC6229B-944A-4E35-91C2-2D9C43CA07AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AC6229B-944A-4E35-91C2-2D9C43CA07AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{703F09BD-0C41-4B73-B162-A92A0430E46D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{703F09BD-0C41-4B73-B162-A92A0430E46D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{703F09BD-0C41-4B73-B162-A92A0430E46D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{703F09BD-0C41-4B73-B162-A92A0430E46D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{880F5709-8DD9-4DBE-BCDC-58655E0AAFC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{880F5709-8DD9-4DBE-BCDC-58655E0AAFC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{880F5709-8DD9-4DBE-BCDC-58655E0AAFC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{880F5709-8DD9-4DBE-BCDC-58655E0AAFC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7C82E91F-0652-4F75-B403-8F1288907750} = {3214A960-F3CB-4352-8BB4-DC5EFE7EFBB8}
@@ -130,5 +144,8 @@ Global
 		{616909B4-12AA-4370-82BB-949FDED8D04C} = {1F43168F-B24E-443E-A54C-2D93E124CD69}
 		{155EDFCB-7F60-4D0D-9186-A916B87C0F86} = {1F43168F-B24E-443E-A54C-2D93E124CD69}
 		{7AC6229B-944A-4E35-91C2-2D9C43CA07AD} = {1F43168F-B24E-443E-A54C-2D93E124CD69}
+		{B6E350ED-695C-421D-98CC-789E6B07D837} = {3214A960-F3CB-4352-8BB4-DC5EFE7EFBB8}
+		{703F09BD-0C41-4B73-B162-A92A0430E46D} = {B6E350ED-695C-421D-98CC-789E6B07D837}
+		{880F5709-8DD9-4DBE-BCDC-58655E0AAFC8} = {B6E350ED-695C-421D-98CC-789E6B07D837}
 	EndGlobalSection
 EndGlobal

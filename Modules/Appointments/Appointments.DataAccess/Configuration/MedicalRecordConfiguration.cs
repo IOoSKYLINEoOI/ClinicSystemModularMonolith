@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Patients.DataAccess.Entities;
+using Appointments.DataAccess.Entities;
 
-namespace Patients.DataAccess.Configuration;
+namespace Appointments.DataAccess.Configuration;
 
 public class MedicalRecordConfiguration : IEntityTypeConfiguration<MedicalRecordEntity>
 {

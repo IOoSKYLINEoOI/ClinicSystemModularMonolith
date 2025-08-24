@@ -1,6 +1,6 @@
 using CSharpFunctionalExtensions;
 
-namespace Patient.Core.Models;
+namespace Appointments.Core.Models;
 
 public class MedicalRecord
 {

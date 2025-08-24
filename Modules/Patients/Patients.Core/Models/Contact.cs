@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
 using CSharpFunctionalExtensions;
 
-namespace Patient.Core.Models;
+namespace Patients.Core.Models;
 
 public class Contact
 {

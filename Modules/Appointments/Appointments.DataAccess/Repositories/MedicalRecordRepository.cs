@@ -1,14 +1,13 @@
-using Microsoft.EntityFrameworkCore;
-using Patient.Core.Models;
-using Patients.DataAccess.Entities;
+using Appointments.Core.Models;
+using Appointments.DataAccess.Entities;
 
-namespace Patients.DataAccess.Repositories;
+namespace Appointments.DataAccess.Repositories;
 
 public class MedicalRecordRepository
 {
-    private readonly PatientDbContext _context;
+    private readonly AppointmentDbContext _context;
 
-    public MedicalRecordRepository(PatientDbContext context)
+    public MedicalRecordRepository(AppointmentDbContext context)
     {
         _context = context;
     }

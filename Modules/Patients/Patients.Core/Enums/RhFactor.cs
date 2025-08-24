@@ -1,4 +1,4 @@
-namespace Patient.Core.Enums;
+namespace Patients.Core.Enums;
 
 public enum RhFactor
 {
