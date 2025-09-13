@@ -48,7 +48,7 @@ public class Patient
         return Result.Success(patient);
     }
 
-    public static Patient FromPersistance(
+    public static Patient FromPersistence(
         Guid id,
         Guid userId,
         DateTime createdAt,

@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using Patients.Core.Interfaces.Repository;
 using Patients.DataAccess.Entities;
 using Patients.Core.Models;
 using Patients.Core.ValueObjects;
 
 namespace Patients.DataAccess.Repositories;
 
-public class PatientRepository
+public class PatientRepository : IPatientRepository
 {
     private readonly PatientDbContext _context;
 
@@ -28,7 +29,7 @@ public class PatientRepository
         if(patientEntity == null)
             throw new InvalidOperationException("Patient not found");
 
-        patientEntity.UserId = patient.UserId;
+        patientEntity.UpdatedAt = patient.UpdatedAt;
         if(patient.BloodProfile != null)
             patientEntity.BloodProfileEntity = BloodProfileMapToEntity(patient.BloodProfile);
 
@@ -63,7 +64,7 @@ public class PatientRepository
         BloodProfileEntity = patient.BloodProfile != null ? BloodProfileMapToEntity(patient.BloodProfile) : null
     };
 
-    private static Patient MapToDomain(PatientEntity patientEntity) => Patient.FromPersistance(
+    private static Patient MapToDomain(PatientEntity patientEntity) => Patient.FromPersistence(
         patientEntity.Id,
         patientEntity.UserId,
         patientEntity.CreatedAt,

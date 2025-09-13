@@ -49,12 +49,14 @@ public class ContactRepository : IContactRepository
 
     public async Task<Contact?> GetById(Guid id)
     {
-        var contactEntity = await _context.Contacts.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
+        var contactEntity = await _context.Contacts
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Id == id);
         
         return contactEntity == null ? null : MapToDomain(contactEntity);
     }
 
-    public async Task<List<Contact>> GetByPatientId(Guid patientId)
+    public async Task<List<Contact>> GetByAllPatientId(Guid patientId)
     {
         var contactEntities = await _context.Contacts
             .AsNoTracking()

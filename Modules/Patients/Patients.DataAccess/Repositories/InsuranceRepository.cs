@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using Patients.Core.Interfaces.Repository;
 using Patients.Core.Models;
 using Patients.DataAccess.Entities;
 
 namespace Patients.DataAccess.Repositories;
 
-public class InsuranceRepository
+public class InsuranceRepository : IInsuranceRepository
 {
     private readonly PatientDbContext _context;
 
@@ -55,7 +56,7 @@ public class InsuranceRepository
         return insuranceEntity == null ? null : MapToDomain(insuranceEntity);
     }
 
-    public async Task<List<Insurance>> GetByPatientId(Guid patientId)
+    public async Task<List<Insurance>> GetByAllPatientId(Guid patientId)
     {
         var insureEntities = await _context.Insurances
             .AsNoTracking()
@@ -65,7 +66,7 @@ public class InsuranceRepository
         return insureEntities.Select(MapToDomain).ToList();
     }
 
-    private InsuranceEntity MapToEntity(Insurance insurance) => new InsuranceEntity()
+    private static InsuranceEntity MapToEntity(Insurance insurance) => new InsuranceEntity()
     {
         Id = insurance.Id,
         InsuranceCompany = insurance.InsuranceCompany,
@@ -75,7 +76,7 @@ public class InsuranceRepository
         PatientId = insurance.PatientId
     };
     
-    private Insurance MapToDomain(InsuranceEntity insuranceEntity) => Insurance.FromPersistence(
+    private static Insurance MapToDomain(InsuranceEntity insuranceEntity) => Insurance.FromPersistence(
         insuranceEntity.Id,
         insuranceEntity.PatientId,
         insuranceEntity.InsuranceCompany,

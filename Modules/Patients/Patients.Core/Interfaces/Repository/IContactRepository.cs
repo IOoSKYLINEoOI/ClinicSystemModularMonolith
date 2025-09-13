@@ -8,5 +8,5 @@ public interface IContactRepository
     Task Update(Contact contact);
     Task Delete(Guid id);
     Task<Contact?> GetById(Guid id);
-    Task<List<Contact>> GetByPatientId(Guid patientId);
+    Task<List<Contact>> GetByAllPatientId(Guid patientId);
 }

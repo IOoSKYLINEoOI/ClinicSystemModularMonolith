@@ -87,4 +87,29 @@ public class Questionnaire
 
         return Result.Success(questionnaire);
     }
+
+    public static Questionnaire FromPersistance(
+        Guid id,
+        string? allergies,
+        string? currentMedications,
+        bool? isSmoker,
+        bool? isAlcoholConsumer,
+        double? heightCm,
+        double? weightKg,
+        Guid patientId,
+        DateTime createdAt,
+        DateTime updatedAt)
+    {
+        return new Questionnaire(
+            id,
+            allergies,
+            currentMedications,
+            isSmoker,
+            isAlcoholConsumer,
+            heightCm,
+            weightKg,
+            patientId,
+            createdAt,
+            updatedAt);
+    }
 }
