@@ -7,7 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Contracts\PatientContracts\" />
+      <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="9.0.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Patients.Application\Patients.Application.csproj" />
+      <ProjectReference Include="..\Patients.Core\Patients.Core.csproj" />
     </ItemGroup>
 
 </Project>

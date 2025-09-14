@@ -1,7 +1,7 @@
 using CSharpFunctionalExtensions;
 using Patients.Core.Models;
 
-namespace Patients.Core.Interfaces.Services;
+namespace Patients.Application.Interfaces.Services;
 
 public interface IContactService
 {

@@ -1,6 +1,6 @@
 using CSharpFunctionalExtensions;
+using Patients.Application.Interfaces.Services;
 using Patients.Core.Interfaces.Repository;
-using Patients.Core.Interfaces.Services;
 using Patients.Core.Models;
 
 namespace Patients.Application.Services;

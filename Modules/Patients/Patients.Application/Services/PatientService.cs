@@ -1,7 +1,7 @@
 using CSharpFunctionalExtensions;
-using Patients.Core.Enums;
+using Patients.Application.Commands.Patient;
+using Patients.Application.Interfaces.Services;
 using Patients.Core.Interfaces.Repository;
-using Patients.Core.Interfaces.Services;
 using Patients.Core.Models;
 using Patients.Core.ValueObjects;
 
@@ -32,23 +32,22 @@ public class PatientService : IPatientService
         return Result.Success();
     }
 
-    public async Task<Result> UpdatePatient(
-        Guid id,
-        BloodGroup type,
-        RhFactor rh,
-        KellFactor kell)
+    public async Task<Result> UpdatePatient(UpdatePatientCommand updatePatientCommand)
     {
-        var  patient = await _patientRepository.GetById(id);
+        var  patient = await _patientRepository.GetById(updatePatientCommand.Id);
         if(patient == null)
-            return Result.Failure($"Patient with ID {id} not found");
+            return Result.Failure($"Patient with ID {updatePatientCommand.Id} not found");
         
-        var bloodProfileResult = BloodProfile.Create(type, rh, kell);
+        var bloodProfileResult = BloodProfile.Create(
+            updatePatientCommand.UpdateBloodProfileCommand.Type,
+            updatePatientCommand.UpdateBloodProfileCommand.Rh,
+            updatePatientCommand.UpdateBloodProfileCommand.Kell);
         if(bloodProfileResult.IsFailure)
             return Result.Failure(bloodProfileResult.Error);
         
         
         var patientUpdate = Patient.Create(
-            id,
+            patient.Id,
             patient.UserId,
             patient.CreatedAt,
             updatedAt: DateTime.Now,
